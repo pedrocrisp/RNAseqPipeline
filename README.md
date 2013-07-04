@@ -23,3 +23,6 @@ Steps:
 - 04: initial statistical analysis (normalisation, etc if required [may be done in 05])
 - 05: differential expression analysis (statstical testing of differential expression)
 - 06: post-analysis
+
+
+There are also some misc scripts, such as index creation etc.
