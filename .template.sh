@@ -1,11 +1,9 @@
 #!/bin/bash
 
-baseDistDir="$(dirname $(readlink -f $0))"
-isSubDir="$(basename $baseDistDir | grep -P "^\d+-")"
-if [ -n $isSubDir ]
-then
-	baseDistDir="${baseDistDir}/../"
-fi
-source "${baseDistDir}/common.sh"
+# source common function script
+scriptdir="$(dirname $(readlink -f $0))"
+basedir="$scriptdir/.."
 
-getDefaultOptions $@
+source "$basedir/common.sh"
+
+getDefaultOptions
