@@ -6,4 +6,4 @@ basedir="$scriptdir/.."
 
 source "$basedir/common.sh"
 
-getDefaultOptions
+getDefaultOptions $@
