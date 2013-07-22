@@ -7,5 +7,7 @@ basedir="$scriptdir/.."
 source "$basedir/common.sh"
 getDefaultOptions $@
 
+scytheOut="$(basename $output .gz)"
 echo scythe $args -o $output $input
-scythe $args -o $output $input
+scythe $args -o $scytheOut $input
+gzip $scytheOut
