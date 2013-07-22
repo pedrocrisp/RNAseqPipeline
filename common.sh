@@ -11,7 +11,7 @@ function getDefaultOptions () {
 		    output="$OPTARG"
 		    ;;
 		a)
-		    args="$OPTARG"
+		    args=`shift $(( ${OPTIND} - 2 )); echo "${*}"`
 		    ;;
 	    esac
 	done
@@ -21,13 +21,13 @@ function getDefaultOptions () {
 
 	if [[ -z "$input"  || ! -r "$input" ]]
 	then
-		echo "Must give input file, and it must exist"
+		echo "Must give input and it must exist"
 		exit 1
 	fi
 
-	if [[ -z "$output"  || ! -r "$output" ]]
+	if [[ -z "$output" ]]
 	then
-		echo "Must give output file, and it must exist"
+		echo "Must give output"
 		exit 1
 	fi
 }
