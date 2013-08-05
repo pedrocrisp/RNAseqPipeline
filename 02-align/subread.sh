@@ -30,4 +30,4 @@ else
 fi
 
 samtools view -S -b $outsam >$outbam
-
+rm -v ${outsam}
