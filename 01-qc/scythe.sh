@@ -9,10 +9,8 @@ getDefaultOptions $@
 
 for fq in $input/*.f[aq]*
 do
-	echo "$fq"
+	fqname="$(basename $fq)"
 	sample=$(basename $output)
-	outputFile="$output/${sample}.trimmed.fastq"
-	echo scythe $args -o $outputFile $fq
-	scythe $args -o $outputFile $fq
-	gzip $outputFile
+	outputFile="$output/${fqname%%.*}.noadapt.fq.gz"
+	scythe $args $fq >$outputFile
 done
