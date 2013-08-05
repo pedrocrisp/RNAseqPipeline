@@ -19,7 +19,6 @@ keyfile=$1
 sort -o $keyfile -k1n $keyfile
 
 function getSamples() {
-	echo "using $keyfile"
 	grep -iv Ordinal < $keyfile | cut -f 2
 }
 
