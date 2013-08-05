@@ -15,9 +15,9 @@ function getDefaultOptions () {
 		    ;;
 	    esac
 	done
-	echo "Input is $input"
-	echo "Output is $output"
-	echo "Args are $args"
+	echo "Input is $input" >/dev/null
+	echo "Output is $output" >/dev/null
+	echo "Args are $args" >/dev/null
 
 	if [[ -z "$input"  || ! -r "$input" ]]
 	then
@@ -31,3 +31,9 @@ function getDefaultOptions () {
 		exit 1
 	fi
 }
+
+function findFastqFiles () {
+	find $1 -name \*.fq\* -or -name \*.fastq\*
+}
+
+alias check_return="if [ $? -ne 0] ; then exit $?; fi"
