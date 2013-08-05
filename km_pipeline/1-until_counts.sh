@@ -22,12 +22,12 @@ then
 	exit -1
 fi
 
-if [ -z ${sample} ]
+if [ -z "${sample}" ]
 then
 	echo "Must give sample"
 fi
 
-if [ ! -d reads/${sample} ]
+if [ ! -d "reads/${sample}" ]
 then
 	echo "Error: sample '${sample}' does not exist"
 	exit -1
