@@ -8,4 +8,5 @@ source "$basedir/common.sh"
 
 getDefaultOptions $@
 
-featureCounts -i "$input" -o "$output" $args
+bamfile="$(find ${input} -name \*.bam)"
+featureCounts -i "$bamfile" -o "$output/$(basename $bamfile .bam).counts" $args
