@@ -43,6 +43,11 @@ qcstep="scythe"
 mkdir -p qcd/${qcstep}/${sample}/
 time bash ${basedir}/01-qc/scythe.sh -i reads/${sample} -o qcd/${qcstep}/${sample} -a "-p 0.1 -a ${refdir}/adaptors.fa"
 
+echo "Run seqtk"
+qcstep="trimfq"
+mkdir -p qcd/${qcstep}/${sample}/
+time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/${sample} -a ""
+
 # enter any additional qc here
 
 pushd qcd > /dev/null
