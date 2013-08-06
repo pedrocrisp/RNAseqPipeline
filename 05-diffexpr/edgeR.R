@@ -21,7 +21,7 @@ numGenes <- nrow(countDFs[[1]])
 geneNames <- as.character(countDFs[[1]]$geneid)
 geneLengths <- countDFs[[1]]$length
 
-countList <- lapply(countDFs, function (df) df[,3])
+countList <- lapply(countDFs, function (df) df$nreads)
 countMatrix <- matrix(unlist(countList), nrow=numGenes)
 sampleGroups <- as.character(keyfile$Treatment)
 dge <- DGEList(counts=countMatrix, group=sampleGroups)
