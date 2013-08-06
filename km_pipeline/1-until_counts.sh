@@ -67,4 +67,4 @@ time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a 
 ###### count #######
 echo "Count with featurecounts"
 mkdir -p count/${sample}
-time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_transposons.tab"
+time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_transposons.tab -p -C"
