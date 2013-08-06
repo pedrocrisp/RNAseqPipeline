@@ -33,8 +33,9 @@ dgec <- estimateCommonDisp(dgen)
 dget <- estimateTagwiseDisp(dgec)
 
 # tad hacky, I'll have to come up with a better way of doing this.
-nonControlSamples <- samples[samples!="Control"]
-testPairs <- lapply(nonControlSamples, function (x) c("Control", x))
+groups <- as.character(unique(keyfile[,3]))
+nonControlGroups <- groups[groups!="Control"]
+testPairs <- lapply(nonControlGroups, function (x) c("Control", x))
 testNames <- lapply(testPairs, function (x) paste(x, collapse=".vs."))
 tests <- lapply(testPairs, function (x) exactTest(dget, pair=x))
 names(tests) <- testNames
