@@ -32,7 +32,6 @@ dgen <- calcNormFactors(dge, method="TMM")
 dgec <- estimateCommonDisp(dgen)
 dget <- estimateTagwiseDisp(dgec)
 
-# tad hacky, I'll have to come up with a better way of doing this.
 groups <- as.character(unique(keyfile[,3]))
 nonControlGroups <- groups[groups!="Control"]
 testPairs <- lapply(nonControlGroups, function (x) c("Control", x))
@@ -40,4 +39,10 @@ testNames <- lapply(testPairs, function (x) paste(x, collapse=".vs."))
 tests <- lapply(testPairs, function (x) exactTest(dget, pair=x))
 names(tests) <- testNames
 
-# incomplete: Need to write results out in a coherent table, like the output of cuffdiff. Also need to do plots.
+for (tst in tests) {
+	fn <- paste(tst$comparison, collapse=".VS.")
+	row.names(table) <- geneNames
+	# next line doesn't work as it should. Row names are not changed after sort.
+	#table <- table[with(table, order(PValue)),]
+	write.csv(table, paste("de/", fn , ".csv", sep=""))
+}
