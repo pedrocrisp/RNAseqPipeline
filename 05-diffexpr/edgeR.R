@@ -38,6 +38,12 @@ geneNames <- as.character(rownames(dge$counts))
 ################################################################################
 
 # TODO: DESeq style +1 transform to allow statisical comparison of low abundance -> high abundance transcripts.
+min.reads <- 1
+min.samples.with.min.reads <- 1
+keep <- rowSums(cpm(dge)>min.reads)>min.samples.with.min.reads
+
+dge <- dge[keep,]
+dge$samples$lib.size <- colSums(dge$counts)
 
 dge <- calcNormFactors(dge, method="TMM")
 dge <- estimateCommonDisp(dge)
@@ -75,9 +81,10 @@ for (tst in tests) {
 	decision <- decideTestsDGE(tst, p=0.05)
 	detags <- geneNames[as.logical(decision)]
 	table <- tst$table
-	row.names(table) <- geneNames
+	table$geneid <- geneNames
+	row.names(table) <- NULL
 	# next line doesn't work as it should. Row names are not changed after sort.
-	#table <- table[with(table, order(PValue)),]
+	table <- table[with(table, order(PValue)),]
 	write.csv(table, paste0(baseName, ".csv"))
 
 	# plots
