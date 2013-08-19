@@ -5,6 +5,9 @@ source("http://bioconductor.org/biocLite.R")
 # edgeR.R --args <keyfile>
 library(edgeR)
 ARGV <- commandArgs(trailingOnly=TRUE)
+
+allpairs <- FALSE
+
 ################################################################################
 ######################           Keyfile            ############################
 ################################################################################
@@ -54,10 +57,15 @@ dge <- estimateTagwiseDisp(dge)
 ######################       Diff Exp Testing       ############################
 ################################################################################
 
-groups <- as.character(unique(keyfile[,3]))
-nonControlGroups <- groups[groups!="Control"]
-testPairs <- lapply(nonControlGroups, function (x) c("Control", x))
-testNames <- lapply(testPairs, function (x) paste(x, collapse=".vs."))
+
+groups <- unique(sampleGroups)
+if(allpairs) {
+  testPairs <- combn(groups, 2)
+} else {
+  nonControlGroups <- groups[2:length(groups)]
+  testPairs <- lapply(nonControlGroups, function (x) c("Control", x))
+}
+testNames <- lapply(testPairs, function (x) paste(x, collapse=".vs."))  
 tests <- lapply(testPairs, function (x) exactTest(dge, pair=x))
 names(tests) <- testNames
 
