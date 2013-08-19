@@ -16,7 +16,7 @@ keyfile.path <- ARGV[1]
 keyfile <- read.delim(keyfile.path)
 samples <- keyfile$Sample
 analysisName <- unlist(strsplit(rev(unlist(strsplit(keyfile.path, "/")))[1], "\\."))[1]
-
+rm(keyfile.path)
 
 ################################################################################
 ######################           Data Entry         ############################
@@ -24,34 +24,43 @@ analysisName <- unlist(strsplit(rev(unlist(strsplit(keyfile.path, "/")))[1], "\\
 
 countFiles <- paste("count/", samples, "/", samples, ".counts", sep="")
 
-sampleGroups <- as.character(keyfile$Treatment)
+sampleGroups <- as.character(paste(keyfile[,3:ncol(keyfile)]))
+sampleGroups
 #geneLengths <- countDFs[[1]]$length
 
 dge <- readDGE(
-	       countFiles,
-	       columns=c(1,3),
-	       group=sampleGroups,
-	       labels=as.character(samples)
-	       )
+  countFiles,
+  columns=c(1,3),
+  group=sampleGroups,
+  labels=as.character(samples)
+)
 geneNames <- as.character(rownames(dge$counts))
 
+rm(countFiles)
 
 ################################################################################
 ######################      DGE Normalisation       ############################
 ################################################################################
 
-# TODO: DESeq style +1 transform to allow statisical comparison of low abundance -> high abundance transcripts.
+# TODO: DESeq style variance stabilisng transform to allow statisical comparison
+# of low abundance -> high abundance transcripts.
+
 min.reads <- 1
 min.samples.with.min.reads <- 1
-keep <- rowSums(cpm(dge)>min.reads)>min.samples.with.min.reads
+num.samples.with.enough.reads <- rowSums(cpm(dge)>min.reads)
+loci.2.keep <- num.samples.with.enough.reads > min.samples.with.min.reads
 
-dge <- dge[keep,]
+old.dge <- dge
+dge <- old.dge[loci.2.keep,]
 dge$samples$lib.size <- colSums(dge$counts)
 
 dge <- calcNormFactors(dge, method="TMM")
 dge <- estimateCommonDisp(dge)
 dge <- estimateTagwiseDisp(dge)
 
+rm(min.reads)
+rm(min.samples.with.min.reads)
+rm(num.samples.with.enough.reads)
 
 ################################################################################
 ######################       Diff Exp Testing       ############################
