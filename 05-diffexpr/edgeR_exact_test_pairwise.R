@@ -132,3 +132,30 @@ for (tst in tests) {
 	abline(h=c(-log2(xf), log2(xf)), col="blue")
 	dev.off()
 }
+
+fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
+p.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
+fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="array")
+rownames(fc.matrix) <- gene.names.keep
+rownames(p.matrix) <- gene.names.keep
+rownames(fdr.matrix) <- gene.names.keep
+
+cpm.matrix <- cpm(dge, log=T)
+colnames(cpm.matrix) <- nice.sample.names
+
+write.csv(cpm.matrix, file=paste0(analysis.name, "_cpm.csv"))
+write.csv(fc.matrix, file=paste0(analysis.name, "_fc.csv"))
+write.csv(fdr.matrix, file=paste0(analysis.name, "_fdr.csv"))
+write.csv(p.matrix, file=paste0(analysis.name, "_p.csv"))
+
+factor.names <- colnames(keyfile)[3:length(colnames(keyfile))]
+
+cpm.melt <- melt(cpm.matrix, varnames=c("geneID", factor.names), value.name="CPM")
+fdr.melt <- melt(fdr.matrix, varnames=c("geneID", factor.names), value.name="FDR")
+fc.melt <- melt(fc.matrix, varnames=c("geneID", factor.names), value.name="logFC")
+p.melt <- melt(p.matrix, varnames=c("geneID", factor.names), value.name="P")
+
+write.csv(cpm.melt, file=paste0(analysis.name, "_cpm_melt.csv"), row.names=F)
+write.csv(fdr.melt, file=paste0(analysis.name, "_fdr_melt.csv"), row.names=F)
+write.csv(fc.melt, file=paste0(analysis.name, "_fc_melt.csv"), row.names=F)
+write.csv(p.melt, file=paste0(analysis.name, "_p_melt.csv"), row.names=F)
