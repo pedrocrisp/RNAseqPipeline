@@ -13,5 +13,5 @@ bambase="align/${sample}/${sample}"
 inbam="${bambase}.bam"
 outbam="${bambase}.sorted.bam"
 
-samtools sort $inbam - | samtools index - $outbam 
-rm -v ${inbam}
+samtools sort -f $inbam $outbam
+samtools index $outbam
