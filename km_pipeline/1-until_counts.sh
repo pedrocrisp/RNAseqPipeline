@@ -51,7 +51,7 @@ time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/$
 # enter any additional qc here
 
 pushd qcd > /dev/null
-ln -s ${qcstep}/${sample} ${sample}
+#ln -s ${qcstep}/${sample} ${sample}
 popd >/dev/null
 
 echo "Run FastQC after all QC steps"
@@ -67,4 +67,4 @@ time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a 
 ###### count #######
 echo "Count with featurecounts"
 mkdir -p count/${sample}
-time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_transposons.tab -p -C"
+time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
