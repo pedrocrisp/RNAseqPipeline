@@ -41,7 +41,7 @@ time bash ${basedir}/01-qc/fastqc.sh -i reads/${sample} -o qc/before/${sample} -
 echo "Run scythe"
 qcstep="scythe"
 mkdir -p qcd/${qcstep}/${sample}/
-time bash ${basedir}/01-qc/scythe.sh -i reads/${sample} -o qcd/${qcstep}/${sample} -a "-p 0.1 -a ${refdir}/adaptors.fa"
+time bash ${basedir}/01-qc/scythe.sh -i reads/${sample} -o qcd/${qcstep}/${sample} -a "-p 0.1 -a ${refdir}/truseq_adapters.fasta"
 
 echo "Run seqtk"
 qcstep="trimfq"
