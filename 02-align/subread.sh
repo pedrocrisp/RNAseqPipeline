@@ -29,5 +29,6 @@ else
 	echo "${fqFiles}"
 fi
 
-samtools view -S -b $outsam >$outbam
+samtools view -S -u $outsam | samtools sort -m 2G -f - $outbam
+samtools index $outbam
 rm -v ${outsam}
