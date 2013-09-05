@@ -35,4 +35,4 @@ fi
 
 ###### align #######
 echo "Convert bams"
-time bash ${basedir}/02-align/subread.sh -i align/${sample} -o align/${sample} -a ""
+time bash ${basedir}/03-postalign/sort_index_bam.sh -i align/${sample} -o align/${sample} -a ""
