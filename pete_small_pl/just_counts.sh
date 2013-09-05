@@ -21,3 +21,6 @@ mkdir -p count/sense/${sample}
 time bash ${basedir}/04-initialstats/featurecounts.sh -i mapping.report.all/${sample} -o count/sense/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_intergenes.tab -s 1"
 mkdir -p count/antisense/${sample}
 time bash ${basedir}/04-initialstats/featurecounts.sh -i mapping.report.all/${sample} -o count/antisense/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_intergenes.tab -s 2"
+
+mkdir -p count/nonsense/${sample}
+time bash ${basedir}/04-initialstats/featurecounts.sh -i mapping.report.all/${sample} -o count/antisense/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_intergenes.tab -s 0"
