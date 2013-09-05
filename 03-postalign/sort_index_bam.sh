@@ -8,10 +8,21 @@ source "$basedir/common.sh"
 
 getDefaultOptions $@
 
-sample="$(basename $input)"
-bambase="align/${sample}/${sample}"
-inbam="${bambase}.bam"
-outbam="${bambase}.sorted.bam"
+sams=$(find $input -type f -name *.sam -not -name *.sorted.sam)
 
-samtools sort -f $inbam $outbam
-samtools index $outbam
+for sam in $sams
+do
+	sample="$(basename $sam)"
+	outbam="${output}/${sample}.sorted.bam"
+	samtools view -Su $sam | samtools sort -m 2G -f - $outbam && \
+		samtools index $outbam
+done
+
+bams=$(find $input -type f -name *.bam -not -name *.sorted.bam)
+for bam in $bams
+do
+	sample="$(basename $bam)"
+	outbam="${output}/${sample}.sorted.bam"
+	samtools sort -m 2G -f $bam $outbam && \
+		samtools index $outbam
+done
