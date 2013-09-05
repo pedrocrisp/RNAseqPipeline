@@ -8,7 +8,7 @@ source "$basedir/common.sh"
 
 
 ###### setup #######
-wsdir="/home/kevin/ws"
+wsdir="$(readlink -f ~/ws)"
 refdir="${wsdir}/refseqs"
 
 sample=$1
