@@ -23,6 +23,7 @@ samples <- keyfile$Sample
 analysis.name <- unlist(strsplit(rev(unlist(strsplit(keyfile.path, "/")))[1], "\\."))[1]
 rm(keyfile.path)
 
+
 ################################################################################
 ######################           Data Entry         ############################
 ################################################################################
@@ -97,10 +98,10 @@ short.sample.names <- sapply(
 nice.sample.names <- paste(sample.groups, rep(1:3,length(groups)), sep=".")
 
 # global plots
-pdf(paste0(analysisName, ".pdf"))
-plotBCV(dge, main=analysisName)
+pdf(paste0(analysis.name, ".pdf"))
+plotBCV(dge, main=analysis.name)
 plotMDS(dge,
-        main=analysisName,
+        main=analysis.name,
         labels=short.sample.names,
         col=rainbow(length(groups))
         )
@@ -133,8 +134,9 @@ for (tst in tests) {
 	dev.off()
 }
 
+pfc.matrix <- predFC(dge)
 fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
-p.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
+p.matrix <- sapply(tests, function (t) t$table$PValue, simplify = "array")
 fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="array")
 rownames(fc.matrix) <- gene.names.keep
 rownames(p.matrix) <- gene.names.keep
@@ -145,6 +147,7 @@ colnames(cpm.matrix) <- nice.sample.names
 
 write.csv(cpm.matrix, file=paste0(analysis.name, "_cpm.csv"))
 write.csv(fc.matrix, file=paste0(analysis.name, "_fc.csv"))
+write.csv(pfc.matrix, file=paste0(analysis.name, "_pfc.csv"))
 write.csv(fdr.matrix, file=paste0(analysis.name, "_fdr.csv"))
 write.csv(p.matrix, file=paste0(analysis.name, "_p.csv"))
 
@@ -154,8 +157,11 @@ cpm.melt <- melt(cpm.matrix, varnames=c("geneID", factor.names), value.name="CPM
 fdr.melt <- melt(fdr.matrix, varnames=c("geneID", factor.names), value.name="FDR")
 fc.melt <- melt(fc.matrix, varnames=c("geneID", factor.names), value.name="logFC")
 p.melt <- melt(p.matrix, varnames=c("geneID", factor.names), value.name="P")
+pfc.melt <- melt(p.matrix, varnames=c("geneID", factor.names), value.name="P")
 
 write.csv(cpm.melt, file=paste0(analysis.name, "_cpm_melt.csv"), row.names=F)
 write.csv(fdr.melt, file=paste0(analysis.name, "_fdr_melt.csv"), row.names=F)
 write.csv(fc.melt, file=paste0(analysis.name, "_fc_melt.csv"), row.names=F)
+write.csv(pfc.melt, file=paste0(analysis.name, "_pfc_melt.csv"), row.names=F)
 write.csv(p.melt, file=paste0(analysis.name, "_p_melt.csv"), row.names=F)
+
