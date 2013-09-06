@@ -51,7 +51,7 @@ time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/$
 # enter any additional qc here
 
 pushd qcd > /dev/null
-ln -s ${qcstep}/${sample} ${sample}
+ln -s $(readlink -f ${qcstep}/${sample}) ${sample}
 popd >/dev/null
 
 echo "Run FastQC after all QC steps"
@@ -60,7 +60,7 @@ time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a "
 
 
 ###### align #######
-echo "Align with subread"
+echo "Align with tophat"
 mkdir -p align/${sample}
 time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded -i ${refdir}/TAIR10_gen/TAIR10_gen"
 
