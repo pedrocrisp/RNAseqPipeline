@@ -25,8 +25,11 @@ function getSamples() {
 echo "Samples are:"
 echo "$(getSamples)"
 
+cat $0
+
 ## enter steps ##
 
 # step 1: from raw reads until counts
 mkdir -p ./log/1-until_counts/
+cat ${scriptdir}/1-until_counts.sh
 getSamples |parallel bash ${scriptdir}/1-until_counts.sh {} \>./log/1-until_counts/{}.log 2\>\&1
