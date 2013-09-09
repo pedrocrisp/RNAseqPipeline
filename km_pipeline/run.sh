@@ -30,3 +30,6 @@ echo "$(getSamples)"
 # step 1: from raw reads until counts
 mkdir -p ./log/1-until_counts/
 getSamples |parallel bash ${scriptdir}/1-until_counts.sh {} \>./log/1-until_counts/{}.log 2\>\&1
+
+mkdir -p ./de
+R -f ${scriptdir}/edgeR-kmhons.R --args $keyfile >./log/de.log
