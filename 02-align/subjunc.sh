@@ -14,6 +14,7 @@ numFqFiles=$(echo $fqFiles | wc -w)
 
 outsam="align/${sample}/${sample}.sam"
 outbam="align/${sample}/${sample}.bam"
+tmpbam="align/${sample}/${RANDOM}.bam"
 
 if [ ${numFqFiles} -eq 1 ]
 then
@@ -29,6 +30,7 @@ else
 	echo "${fqFiles}"
 fi
 
-samtools view -S -u $outsam | samtools sort -m 2G -f - $outbam
+samtools view -S -u $outsam > ${tmpbam}
+samtools sort -m 2G -f ${tmpbam} $outbam
 samtools index $outbam
-rm -v ${outsam}
+rm -v ${outsam} ${tmpbam}
