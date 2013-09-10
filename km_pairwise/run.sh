@@ -36,5 +36,6 @@ getSamples |parallel "bash ${scriptdir}/1-until_counts.sh {} >./log/1-until_coun
 
 # step 2: differential expression
 mkdir -p ./de
-cat ${scriptdir}/edgeR-kmhons.R
-R -f ${scriptdir}/edgeR-kmhons.R --args $keyfile >./log/de.log
+script="${basedir}/05-edgeR_exact_test_pairwise.R"
+cat $script
+R -f $script --args $keyfile >./log/de.log
