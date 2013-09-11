@@ -13,7 +13,7 @@ fqFiles="$(ls $input/*.f[aq]*)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
 outsam="align/${sample}/${sample}.sam"
-outbam="align/${sample}/${sample}.bam"
+outbam="align/${sample}/${sample}" # no .bam, as samtools sort -f has a bug.
 tmpbam="align/${sample}/${RANDOM}.bam"
 
 if [ ${numFqFiles} -eq 1 ]
@@ -31,6 +31,6 @@ else
 fi
 
 samtools view -S -u $outsam > ${tmpbam}
-samtools sort -m 2G -f ${tmpbam} $outbam
-samtools index $outbam
+samtools sort -m 2G ${tmpbam} $outbam
+samtools index ${outbam}.bam
 rm -v ${outsam} ${tmpbam}
