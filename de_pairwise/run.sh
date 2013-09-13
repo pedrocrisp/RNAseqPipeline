@@ -23,15 +23,6 @@ fi
 
 
 ########## Run #################
-# sort keyfile. -n make the header line come at the start, if it starts with a letter
-sort -o $keyfile -k1n $keyfile
-
-function getSamples() {
-	grep -iv Ordinal < $keyfile | cut -f 2
-}
-
-echo "Samples are:"
-echo "$(getSamples)"
 
 cat $0
 ## enter steps ##
