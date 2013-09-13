@@ -62,7 +62,7 @@ time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a "
 ###### align #######
 echo "Align with subread"
 mkdir -p align/${sample}
-time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen"
+time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
 
 ###### count #######
 echo "Count with featurecounts"
