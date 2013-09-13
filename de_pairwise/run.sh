@@ -13,6 +13,14 @@ keyfile=$1
 # kefile format: (tab seperated)
 #Ordinal	Sample	<factor1_name> [<factor2_name>]
 
+##### Check env ####
+
+if [ ! -d counts ]
+then
+	echo "No ./counts directory"
+	exit -1
+fi
+
 
 ########## Run #################
 # sort keyfile. -n make the header line come at the start, if it starts with a letter
@@ -27,12 +35,6 @@ echo "$(getSamples)"
 
 cat $0
 ## enter steps ##
-
-# step 1: from raw reads until counts
-mkdir ./log/1-until_counts/
-cat ${scriptdir}/1-until_counts.sh
-getSamples |parallel "bash ${scriptdir}/1-until_counts.sh {} >./log/1-until_counts/{}.log 2>&1"
-
 
 # step 2: differential expression
 mkdir ./de
