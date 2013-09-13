@@ -14,25 +14,19 @@ keyfile=$1
 #Ordinal	Sample	<factor1_name> [<factor2_name>]
 
 
+##### Check env ####
+
+if [ ! -d counts ]
+then
+	echo "No ./counts directory"
+	exit -1
+fi
+
+
 ########## Run #################
-# sort keyfile. -n make the header line come at the start, if it starts with a letter
-sort -o $keyfile -k1n $keyfile
-
-function getSamples() {
-	grep -iv Ordinal < $keyfile | cut -f 2
-}
-
-echo "Samples are:"
-echo "$(getSamples)"
 
 cat $0
 ## enter steps ##
-
-# step 1: from raw reads until counts
-mkdir -p ./log/1-until_counts/
-script="${scriptdir}/1-until_counts.sh"
-cat $script
-getSamples |parallel "bash $script {} >./log/1-until_counts/{}.log 2>&1"
 
 
 # step 2: differential expression
