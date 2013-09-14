@@ -7,7 +7,7 @@ basedir="$scriptdir/.."
 source "$basedir/common.sh"
 getDefaultOptions $@
 
-for fq in $input/*.f[aq]*
+for fq in $(find $input/ -name *.f[aq]*)
 do
 	fqname="$(basename $fq)"
 	sample=$(basename $output)
