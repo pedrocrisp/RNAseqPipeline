@@ -33,9 +33,3 @@ cat $0
 mkdir ./log/1-until_counts/
 cat ${scriptdir}/1-until_counts.sh
 getSamples |parallel bash ${scriptdir}/1-until_counts.sh {} \>./log/1-until_counts/{}.log 2\>\&1
-
-# step 2: differential expression
-mkdir ./de
-script="${basedir}/05-diffexpr/edgeR_exact_test_pairwise.R"
-cat $script
-R -f $script --args $keyfile >./log/de.log
