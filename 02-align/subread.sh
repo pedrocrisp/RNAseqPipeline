@@ -18,17 +18,24 @@ tmpbam="align/${sample}/${RANDOM}.bam"
 
 if [ ${numFqFiles} -eq 1 ]
 then
+	echo subread-align $args -r "$fqFiles" -o "$outsam"
 	subread-align $args -r "$fqFiles" -o "$outsam"
 elif [ ${numFqFiles} -eq 2 ]
 then
 	fq1="$(echo $fqFiles |cut -d ' ' -f 1)"
 	fq2="$(echo $fqFiles |cut -d ' ' -f 2)"
+	echo subread-align $args -r "${fq1}" -R "${fq2}" -o "$outsam"
 	subread-align $args -r "${fq1}" -R "${fq2}" -o "$outsam"
 else
 	echo "ERROR: not able to align multiple fq files per pair"
 	echo "fqFiles:"
 	echo "${fqFiles}"
 fi
+
+echo "samtools view -S -u $outsam > ${tmpbam}
+samtools sort -m 2G ${tmpbam} $outbam
+samtools index ${outbam}.bam
+rm -v ${outsam} ${tmpbam}"
 
 samtools view -S -u $outsam > ${tmpbam}
 samtools sort -m 2G ${tmpbam} $outbam

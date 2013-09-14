@@ -11,5 +11,6 @@ for fq in $(find $input/ -name *.f[aq]*)
 do
 	sample=$(basename $output)
 	outputFile="$output/${sample}.trimmed.fq"
+	echo "seqtk trimfq $args $fq >$outputFile"
 	seqtk trimfq $args $fq >$outputFile
 done

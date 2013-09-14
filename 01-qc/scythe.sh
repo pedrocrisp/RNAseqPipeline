@@ -11,5 +11,6 @@ for fq in $(find $input/ -name *.f[aq]*)
 do
 	sample=$(basename $output)
 	outputFile="$output/${sample}.noadapt.fq.gz"
+	echo "scythe $args $fq >$outputFile"
 	scythe $args $fq >$outputFile
 done

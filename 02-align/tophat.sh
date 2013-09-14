@@ -10,11 +10,13 @@ getDefaultOptions $@
 
 if [ ${numFqFiles} -eq 1 ]
 then
+	echo tophat $args  -o "$output/tophat_out" "$fqFiles"
 	tophat $args  -o "$output/tophat_out" "$fqFiles"
 elif [ ${numFqFiles} -eq 2 ]
 then
 	fq1="$(echo $fqFiles |cut -d ' ' -f 1)"
 	fq2="$(echo $fqFiles |cut -d ' ' -f 2)"
+	echo tophat $args -o "$output/tophat_out" "${fq1}" "${fq2}"
 	tophat $args -o "$output/tophat_out" "${fq1}" "${fq2}"
 else
 	echo "ERROR: not able to align multiple fq files per pair"
@@ -23,4 +25,5 @@ else
 fi
 
 # link to keep bam position compatible w/ other aligners
+echo ln -s "$output/tophat_out/accepted_hits.bam" "$output/$(basename $output).bam"
 ln -s "$output/tophat_out/accepted_hits.bam" "$output/$(basename $output).bam"
