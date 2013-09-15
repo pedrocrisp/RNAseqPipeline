@@ -9,8 +9,9 @@ getDefaultOptions $@
 
 for fq in $(find $input/ -name *.f[aq]*)
 do
+	fqname="$(basename $fq)"
 	sample=$(basename $output)
-	outputFile="$output/${sample}.trimmed.fq"
+	outputFile="$output/${fqname%%.*}.trimmed.fq"
 	echo "seqtk trimfq $args $fq >$outputFile"
 	seqtk trimfq $args $fq >$outputFile
 done
