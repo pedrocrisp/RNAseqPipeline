@@ -75,6 +75,7 @@ table(ms.keep)
 
 loci.2.keep <- ms.keep & mr.keep
 table(loci.2.keep)
+n.tags <- sum(loci.2.keep) # sum of true values, i.e. count all genes to keep
 
 old.dge <- dge
 dge <- old.dge[loci.2.keep,]
