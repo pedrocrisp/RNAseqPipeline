@@ -12,9 +12,9 @@ sample=$(basename $input)
 fqFiles="$(ls $input/*.f[aq]*)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
-outsam="align/${sample}/${sample}.sam"
-outbam="align/${sample}/${sample}" # no .bam, as samtools sort -f has a bug.
-tmpbam="align/${sample}/${RANDOM}.bam"
+outsam="${output}/${sample}.sam"
+outbam="${output}/${sample}" # no .bam, as samtools sort -f has a bug.
+tmpbam="${output}/${RANDOM}.bam"
 
 if [ ${numFqFiles} -eq 1 ]
 then
@@ -30,6 +30,7 @@ else
 	echo "ERROR: not able to align multiple fq files per pair"
 	echo "fqFiles:"
 	echo "${fqFiles}"
+	exit 1
 fi
 
 echo "samtools view -S -u $outsam > ${tmpbam}
