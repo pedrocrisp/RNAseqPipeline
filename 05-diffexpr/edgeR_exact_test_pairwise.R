@@ -32,7 +32,7 @@ analysis.name <- unlist(
   strsplit(rev(unlist(strsplit(keyfile.path, "/")))[1], "\\."))[1]
 
 out.base <- paste0("./de/", analysis.name)
-dir.create(plot.path, recursive=T)
+dir.create(out.base, recursive=T)
 
 
 ################################################################################
