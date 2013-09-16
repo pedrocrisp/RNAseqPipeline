@@ -32,7 +32,7 @@ samples <- keyfile$Sample
 analysis.name <- unlist(
   strsplit(rev(unlist(strsplit(keyfile.path, "/")))[1], "\\."))[1]
 
-out.base <- paste0("./de/", analysis.name)
+out.base <- paste0("./de/", analysis.name, "/")
 dir.create(out.base, recursive=T)
 
 
@@ -66,9 +66,13 @@ gene.names <- as.character(rownames(dge$counts))
 # TODO: DESeq style variance stabilisng transform to allow statisical comparison
 # of low abundance -> high abundance transcripts.
 
-min.reads <- 8
-min.samples.with.reads <- 3
-mr.keep <- rowSums(cpm(dge)) > min.reads
+n.samples <- length(sample.groups)
+n.reps <- n.samples / length(groups)
+min.avg.reads.per.sample <- 0.5 # cpm, invariant
+min.total.reads <- min.reads.per.sample * n.samples
+min.samples.with.reads <- ((n.samples / n.reps) * 0.5) + n.reps
+
+mr.keep <- rowSums(cpm(dge)) > min.total.reads
 table(mr.keep)
 
 ms.keep <- rowSums(cpm(dge) > 0) > min.samples.with.reads
@@ -113,7 +117,6 @@ names(tests)
 ######################         Write Results        ############################
 ################################################################################
 
-n.reps <- length(sample.groups) / length(groups)
 short.names <- paste(
   substr(sample.groups, 0, 4),
   rep_len(1:n.reps, length(sample.groups)),
@@ -153,7 +156,7 @@ redblue <- paste0(
 # write exact test tables out
 for (tst in tests) {
   test.name <- paste(tst$comparison, collapse=".VS.")
-  test.base.dir <- paste0(out.base, "/", test.name)
+  test.base.dir <- paste0(out.base, test.name, "/")
   dir.create(test.base.dir)
 
   decision <- decideTestsDGE(tst, p=0.05)
