@@ -12,21 +12,25 @@ function getDefaultOptions () {
 		    ;;
 		a)
 		    args=`shift $(( ${OPTIND} - 2 )); echo "${*}"`
+		    break
 		    ;;
 	    esac
 	done
+
 	echo "Input is $input" >/dev/null
 	echo "Output is $output" >/dev/null
 	echo "Args are $args" >/dev/null
 
 	if [[ -z "$input"  || ! -r "$input" ]]
 	then
+		echo "input was |$input|"
 		echo "Must give input and it must exist"
 		exit 1
 	fi
 
 	if [[ -z "$output" ]]
 	then
+		echo "output was |$output|"
 		echo "Must give output"
 		exit 1
 	fi
