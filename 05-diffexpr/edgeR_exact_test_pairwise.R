@@ -114,6 +114,11 @@ names(tests)
 ################################################################################
 
 n.reps <- length(sample.groups) / length(groups)
+short.names <- paste(
+  substr(sample.groups, 0, 4),
+  rep_len(1:n.reps, length(sample.groups)),
+  sep="R"
+)
 nice.sample.names <- paste(
   sample.groups,
   rep_len(1:n.reps, length(sample.groups)),
@@ -135,6 +140,16 @@ dev.off()
 
 
 xf <-  4 # fold change at which lines are ruled in test writer below
+n.hm.genes <- 500
+# a nice red -> black -> blue gradient. 
+# Visualise w/ 
+# image(matrix(1:255), col=redblue)
+redblue <- paste0(
+  "#",
+  as.hexmode(c(rep(0, 128),1:127 * 2)),
+  format(as.hexmode(rep(0, 255)), width=2),
+  as.hexmode(c(127:1 * 2, rep(0, 128)))
+)
 # write exact test tables out
 for (tst in tests) {
 	test.name <- paste(tst$comparison, collapse=".VS.")
@@ -146,10 +161,16 @@ for (tst in tests) {
   print(table(decision))
 	detags <- gene.names[as.logical(decision)]
   
-  # topTags table for this test
-	table <- topTags(tst, n=n.tags)
-	write.csv(table, paste0(test.base.dir, test.name, ".csv"))
-
+  # tables for this test
+	tt <- topTags(tst, n=n.tags)
+	write.csv(tt, paste0(test.base.dir, test.name, "_toptags.csv"))
+	
+	
+	hm.cols <- sample.groups %in% tst$comparison
+	hm.rows <- match(rownames(tt)[1:n.hm.genes], rownames(dge$counts))
+	table <- dge$counts[hm.rows, hm.cols]
+	write.csv(tt, paste0(test.base.dir, test.name, "_sampletable.csv"))
+  
 	# plots
 	pdf(paste0(test.base.dir, test.name, "_smear.pdf"))
 	plotSmear(
@@ -162,7 +183,22 @@ for (tst in tests) {
 	dev.off()
 
 	pdf(paste0(test.base.dir, test.name, "_heatmap.pdf"))
-	heatmap(log(table[1:1000,]+1))
+	heatmap.2(
+    log(table+1),
+    col=redblue,
+    trace="none",
+    scale='row',
+    main=test.name,
+    labRow=NA,
+    density.info="histogram",
+    cexCol=0.8,
+    labCol=short.names,
+    xlab="Samples",
+    ylab=paste("Tags", "(n=", n.hm.genes, ")"),
+    lmat=rbind(c(0,3), c(2,1), c(4,4)), # WHAT IS THIS BLACK MAGIC
+    lwid=c(0.3,4), # http://stackoverflow.com/questions/15351575/moving-color-
+    lhei=c(2,6,3) # url cont: # key-in-r-heatmap-2-function-of-gplots-package
+    )
   dev.off()
 }
 
