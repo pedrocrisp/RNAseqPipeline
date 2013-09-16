@@ -6,6 +6,7 @@
 library(edgeR)
 library(multicore)
 library(reshape2)
+library(gplots)
 
 ## USAGE:
 # edgeR-pairwise.R --args <keyfile>
@@ -159,6 +160,10 @@ for (tst in tests) {
 		  )
 	abline(h=c(-log2(xf), log2(xf)), col="blue")
 	dev.off()
+
+	pdf(paste0(test.base.dir, test.name, "_heatmap.pdf"))
+	heatmap(log(table[1:1000,]+1))
+  dev.off()
 }
 
 pfc.matrix <- predFC(dge)
