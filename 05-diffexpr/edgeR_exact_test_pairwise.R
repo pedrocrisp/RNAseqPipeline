@@ -142,7 +142,7 @@ for (tst in tests) {
 	decision <- decideTestsDGE(tst, p=0.05)
   print(test.name)
   print(table(decision))
-	detags <- gene.names.keep[as.logical(decision)]
+	detags <- gene.names[as.logical(decision)]
   
   # topTags table for this test
 	table <- topTags(tst, n=n.tags)
@@ -164,9 +164,9 @@ pfc.matrix <- predFC(dge)
 fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
 p.matrix <- sapply(tests, function (t) t$table$PValue, simplify = "array")
 fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="array")
-rownames(fc.matrix) <- gene.names.keep
-rownames(p.matrix) <- gene.names.keep
-rownames(fdr.matrix) <- gene.names.keep
+rownames(fc.matrix) <- gene.names
+rownames(p.matrix) <- gene.names
+rownames(fdr.matrix) <- gene.names
 
 cpm.matrix <- cpm(dge, log=T)
 colnames(cpm.matrix) <- nice.sample.names
