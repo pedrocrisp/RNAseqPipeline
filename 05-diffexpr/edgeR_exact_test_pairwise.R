@@ -141,8 +141,8 @@ dev.off()
 
 xf <-  4 # fold change at which lines are ruled in test writer below
 n.hm.genes <- 500
-# a nice red -> black -> blue gradient. 
-# Visualise w/ 
+# a nice red -> black -> blue gradient.
+# Visualise w/
 # image(matrix(1:255), col=redblue)
 redblue <- paste0(
   "#",
@@ -152,38 +152,38 @@ redblue <- paste0(
 )
 # write exact test tables out
 for (tst in tests) {
-	test.name <- paste(tst$comparison, collapse=".VS.")
-	test.base.dir <-paste0(out.base, test.name)
+  test.name <- paste(tst$comparison, collapse=".VS.")
+  test.base.dir <-paste0(out.base, test.name)
   dir.create(test.base.dir)
 
-	decision <- decideTestsDGE(tst, p=0.05)
+  decision <- decideTestsDGE(tst, p=0.05)
   print(test.name)
   print(table(decision))
-	detags <- gene.names[as.logical(decision)]
-  
-  # tables for this test
-	tt <- topTags(tst, n=n.tags)
-	write.csv(tt, paste0(test.base.dir, test.name, "_toptags.csv"))
-	
-	
-	hm.cols <- sample.groups %in% tst$comparison
-	hm.rows <- match(rownames(tt)[1:n.hm.genes], rownames(dge$counts))
-	table <- dge$counts[hm.rows, hm.cols]
-	write.csv(tt, paste0(test.base.dir, test.name, "_sampletable.csv"))
-  
-	# plots
-	pdf(paste0(test.base.dir, test.name, "_smear.pdf"))
-	plotSmear(
-		  dge,
-		  de.tags=detags,
-		  main=test.name,
-		  sub=paste("lines indicate", xf, "fold change")
-		  )
-	abline(h=c(-log2(xf), log2(xf)), col="blue")
-	dev.off()
+  detags <- gene.names[as.logical(decision)]
 
-	pdf(paste0(test.base.dir, test.name, "_heatmap.pdf"))
-	heatmap.2(
+  # tables for this test
+  tt <- topTags(tst, n=n.tags)
+  write.csv(tt, paste0(test.base.dir, test.name, "_toptags.csv"))
+
+
+  hm.cols <- sample.groups %in% tst$comparison
+  hm.rows <- match(rownames(tt)[1:n.hm.genes], rownames(dge$counts))
+  table <- dge$counts[hm.rows, hm.cols]
+  write.csv(tt, paste0(test.base.dir, test.name, "_sampletable.csv"))
+
+  # plots
+  pdf(paste0(test.base.dir, test.name, "_smear.pdf"))
+  plotSmear(
+      dge,
+      de.tags=detags,
+      main=test.name,
+      sub=paste("lines indicate", xf, "fold change")
+      )
+  abline(h=c(-log2(xf), log2(xf)), col="blue")
+  dev.off()
+
+  pdf(paste0(test.base.dir, test.name, "_heatmap.pdf"))
+  heatmap.2(
     log(table+1),
     col=redblue,
     trace="none",
@@ -198,7 +198,7 @@ for (tst in tests) {
     lmat=rbind(c(0,3), c(2,1), c(4,4)), # WHAT IS THIS BLACK MAGIC
     lwid=c(0.3,4), # http://stackoverflow.com/questions/15351575/moving-color-
     lhei=c(2,6,3) # url cont: # key-in-r-heatmap-2-function-of-gplots-package
-    )
+  )
   dev.off()
 }
 
