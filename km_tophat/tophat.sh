@@ -67,8 +67,8 @@ time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a "
 echo "Align with tophat"
 mkdir -p align/${sample}
 # order of arguments to tophat.sh is important. Ref base must be given to -a, without an argument, and must be the last argument
-echo time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded ${refdir}/TAIR10_gen/TAIR10_gen"
-time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded ${refdir}/TAIR10_gen/TAIR10_gen"
+echo time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded --min-intron-length 20 --max-intron-length 2000 --rg-platform illumina -G ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.gff ${refdir}/TAIR10_gen/TAIR10_gen"
+time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded --min-intron-length 20 --max-intron-length 2000 --rg-platform illumina -G ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.gff ${refdir}/TAIR10_gen/TAIR10_gen"
 
 ###### count #######
 echo "Count with featurecounts"
