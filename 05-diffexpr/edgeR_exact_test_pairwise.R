@@ -153,7 +153,7 @@ redblue <- paste0(
 # write exact test tables out
 for (tst in tests) {
   test.name <- paste(tst$comparison, collapse=".VS.")
-  test.base.dir <-paste0(out.base, test.name)
+  test.base.dir <- paste0(out.base, "/", test.name)
   dir.create(test.base.dir)
 
   decision <- decideTestsDGE(tst, p=0.05)
