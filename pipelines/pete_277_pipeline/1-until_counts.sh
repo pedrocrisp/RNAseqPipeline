@@ -2,7 +2,7 @@
 
 # source common function script
 scriptdir="$(dirname $(readlink -f $0))"
-basedir="$scriptdir/../"
+basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
@@ -54,7 +54,7 @@ time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/$
 # enter any additional qc here
 
 pushd qcd > /dev/null
-ln -s $(readlink -f ${qcstep}/${sample}) ${sample}
+ln -s ${qcstep}/${sample} ${sample}
 popd >/dev/null
 
 echo "Run FastQC after all QC steps"
@@ -64,14 +64,15 @@ time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a "
 
 
 ###### align #######
-echo "Align with tophat"
+echo "Align with subread"
 mkdir -p align/${sample}
-# order of arguments to tophat.sh is important. Ref base must be given to -a, without an argument, and must be the last argument
-echo time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded --min-intron-length 20 --max-intron-length 2000 --rg-platform illumina -G ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.gff ${refdir}/TAIR10_gen/TAIR10_gen"
-time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded --min-intron-length 20 --max-intron-length 2000 --rg-platform illumina -G ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.gff ${refdir}/TAIR10_gen/TAIR10_gen"
+echo time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
+time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
 
 ###### count #######
 echo "Count with featurecounts"
 mkdir -p count/${sample}
-echo time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
-time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
+# exp277 is stranded, use -s 1
+# also using the intergenes SAF
+echo time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_intergenes.saf -s 1 -p -C"
+time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes_intergenes.saf -s 1 -p -C"

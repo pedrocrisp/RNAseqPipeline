@@ -2,7 +2,7 @@
 
 # source common function script
 scriptdir="$(dirname $(readlink -f $0))"
-basedir="$scriptdir/../"
+basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
@@ -26,10 +26,9 @@ echo "Samples are:"
 echo "$(getSamples)"
 
 cat $0
-
 ## enter steps ##
 
 # step 1: from raw reads until counts
 mkdir ./log/1-until_counts/
 cat ${scriptdir}/1-until_counts.sh
-getSamples |parallel bash ${scriptdir}/1-until_counts.sh {} \>./log/1-until_counts/{}.log 2\>\&1
+getSamples |parallel "bash ${scriptdir}/1-until_counts.sh {} >./log/1-until_counts/{}.log 2>&1"

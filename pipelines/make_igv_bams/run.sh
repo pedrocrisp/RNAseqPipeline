@@ -2,7 +2,7 @@
 
 # source common function script
 scriptdir="$(dirname $(readlink -f $0))"
-basedir="$scriptdir/../"
+basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
@@ -27,6 +27,5 @@ echo "$(getSamples)"
 
 ## enter steps ##
 
-# step 1: from raw reads until counts, using tophat
-mkdir -p ./log/tophat/
-getSamples |parallel bash ${scriptdir}/tophat.sh {} \>./log/tophat/{}.log 2\>\&1
+mkdir -p ./log/make_igv_bams/
+getSamples |parallel bash ${scriptdir}/make_igv_bams.sh {} \>./log/make_igv_bams/{}.log 2\>\&1

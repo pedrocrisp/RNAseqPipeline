@@ -2,7 +2,7 @@
 
 # source common function script
 scriptdir="$(dirname $(readlink -f $0))"
-basedir="$scriptdir/../"
+basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 

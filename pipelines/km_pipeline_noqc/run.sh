@@ -2,7 +2,7 @@
 
 # source common function script
 scriptdir="$(dirname $(readlink -f $0))"
-basedir="$scriptdir/../"
+basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
@@ -27,5 +27,6 @@ echo "$(getSamples)"
 
 ## enter steps ##
 
-mkdir -p ./log/make_igv_bams/
-getSamples |parallel bash ${scriptdir}/make_igv_bams.sh {} \>./log/make_igv_bams/{}.log 2\>\&1
+# step 1: from raw reads until counts
+mkdir -p ./log/1-until_counts/
+getSamples |parallel bash ${scriptdir}/1-until_counts.sh {} \>./log/1-until_counts/{}.log 2\>\&1

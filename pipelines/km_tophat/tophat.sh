@@ -2,13 +2,13 @@
 
 # source common function script
 scriptdir="$(dirname $(readlink -f $0))"
-basedir="$scriptdir/../"
+basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
 
 ###### setup #######
-wsdir="$(readlink -f ~/ws)"
+wsdir="/home/kevin/ws"
 refdir="${wsdir}/refseqs"
 
 sample=$1
@@ -54,7 +54,7 @@ time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/$
 # enter any additional qc here
 
 pushd qcd > /dev/null
-ln -s ${qcstep}/${sample} ${sample}
+ln -s $(readlink -f ${qcstep}/${sample}) ${sample}
 popd >/dev/null
 
 echo "Run FastQC after all QC steps"
@@ -64,10 +64,11 @@ time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a "
 
 
 ###### align #######
-echo "Align with subread"
+echo "Align with tophat"
 mkdir -p align/${sample}
-echo time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
-time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
+# order of arguments to tophat.sh is important. Ref base must be given to -a, without an argument, and must be the last argument
+echo time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded --min-intron-length 20 --max-intron-length 2000 --rg-platform illumina -G ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.gff ${refdir}/TAIR10_gen/TAIR10_gen"
+time bash ${basedir}/02-align/tophat.sh -i qcd/${sample} -o align/${sample} -a "--solexa-quals --library-type fr-unstranded --min-intron-length 20 --max-intron-length 2000 --rg-platform illumina -G ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.gff ${refdir}/TAIR10_gen/TAIR10_gen"
 
 ###### count #######
 echo "Count with featurecounts"
