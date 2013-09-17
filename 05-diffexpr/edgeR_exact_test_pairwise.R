@@ -65,7 +65,7 @@ gene.names <- as.character(rownames(dge$counts))
 
 # TODO: DESeq style variance stabilisng transform to allow statisical comparison
 # of low abundance -> high abundance transcripts.
-
+groups <- unique(sample.groups)
 n.samples <- length(sample.groups)
 n.reps <- n.samples / length(groups)
 min.avg.reads.per.sample <- 0.5 # cpm, invariant
@@ -97,8 +97,6 @@ dge <- estimateTagwiseDisp(dge)
 ################################################################################
 ######################       Diff Exp Testing       ############################
 ################################################################################
-
-groups <- unique(sample.groups)
 
 if(allpairs) {
   test.pairs <- combn(groups, 2) # bug here
