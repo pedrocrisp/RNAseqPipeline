@@ -47,19 +47,14 @@ pushd qcd > /dev/null
 ln -s ${qcstep}/${sample} ${sample}
 popd >/dev/null
 
-echo "Run FastQC after all QC steps"
-mkdir -p qc/after/${sample}
-echo time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a ""
-time bash ${basedir}/01-qc/fastqc.sh -i qcd/${sample} -o qc/after/${sample} -a ""
-
 ###### align #######
 echo "Align with subread"
 mkdir -p align/${sample}
-echo time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
-time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
+echo time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-T 4 -i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
+time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-T 4 -i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
 
 ###### count #######
 echo "Count with featurecounts"
 mkdir -p count/${sample}
-echo time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
-time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
+echo time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-T 4 -F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
+time bash ${basedir}/04-initialstats/featurecounts.sh -i align/${sample} -o count/${sample} -a "-T 4 -F SAF -b -a ${refdir}/TAIR10_gen/TAIR10_GFF3_genes.saf -p -C"
