@@ -15,9 +15,9 @@ keyfile=$1
 
 ##### Check env ####
 
-if [ ! -d counts ]
+if [ ! -d count ]
 then
-	echo "No ./counts directory"
+	echo "No ./count directory"
 	exit -1
 fi
 
