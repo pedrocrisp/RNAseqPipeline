@@ -69,7 +69,7 @@ groups <- unique(sample.groups)
 n.samples <- length(sample.groups)
 n.reps <- n.samples / length(groups)
 min.avg.reads.per.sample <- 0.5 # cpm, invariant
-min.total.reads <- min.reads.per.sample * n.samples
+min.total.reads <- min.avg.reads.per.sample * n.samples
 min.samples.with.reads <- ((n.samples / n.reps) * 0.5) + n.reps
 
 mr.keep <- rowSums(cpm(dge)) > min.total.reads
