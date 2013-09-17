@@ -5,6 +5,7 @@ scriptdir="$(dirname $(readlink -f $0))"
 basedir="$scriptdir/../"
 
 source "$basedir/common.sh"
+alias timestamp='date +%Y%m%d-%H%M%S'
 
 
 ######### Setup ################
@@ -31,7 +32,7 @@ cat $0
 # step 1: from raw reads until counts
 mkdir ./log/1-until_counts/
 cat ${scriptdir}/1-until_counts.sh
-getSamples |parallel "bash ${scriptdir}/1-until_counts.sh {} >./log/1-until_counts.`timestamp`/{}.log 2>&1"
+getSamples |parallel "bash ${scriptdir}/1-until_counts.sh {} >./log/1-until_counts/{}.`timestamp`.log 2>&1"
 
 # step 2: differential expression
 mkdir ./de
