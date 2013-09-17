@@ -1,4 +1,4 @@
-#1/bin/bash
+#!/bin/bash
 
 function getDefaultOptions () {
 	while getopts :i:o:a: flag
@@ -41,3 +41,4 @@ function findFastqFiles () {
 }
 
 alias check_return="if [ $? -ne 0] ; then exit $?; fi"
+alias timestamp='date +%Y%m%d-%H%M%S'
