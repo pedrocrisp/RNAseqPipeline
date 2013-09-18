@@ -99,7 +99,8 @@ dge <- estimateTagwiseDisp(dge)
 ################################################################################
 
 if(allpairs) {
-  test.pairs <- combn(groups, 2) # bug here
+  test.m <- t(combn(groups, 2))
+  test.pairs <- lapply(1:nrow(test.m), function (i) test.m[i,])
 } else {
   non.control.groups <- groups[2:length(groups)]
   test.pairs <- lapply(non.control.groups, function (x) c(groups[1], x))
