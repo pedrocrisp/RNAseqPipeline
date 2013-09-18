@@ -50,8 +50,8 @@ popd >/dev/null
 ###### align #######
 echo "Align with subread"
 mkdir -p align/${sample}
-echo time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-T 4 -i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
-time bash ${basedir}/02-align/subread.sh -i qcd/${sample} -o align/${sample} -a "-T 4 -i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
+echo time bash ${basedir}/02-align/subread_nosortidx.sh -i qcd/${sample} -o align/${sample} -a "-T 4 -i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
+time bash ${basedir}/02-align/subread_nosortidx.sh -i qcd/${sample} -o align/${sample} -a "-T 4 -i ${refdir}/TAIR10_gen/TAIR10_gen_chrc"
 
 ###### count #######
 echo "Count with featurecounts"
