@@ -43,7 +43,7 @@ dir.create(out.base, recursive=T)
 count.files <- paste0("count/", samples, "/", samples, ".counts")
 
 
-sample.groups <- as.character(apply(keyfile[,3:length(keyfile)], 1, paste, collapse=" "))
+sample.groups <- apply(as.matrix(keyfile[,3:length(keyfile)]), 1, paste, collapse=" ")
 
 tmp <- read.delim(count.files[[1]])
 gene.lengths <- as.numeric(tmp[,2])
