@@ -172,7 +172,7 @@ for (tst in tests) {
   hm.cols <- sample.groups %in% tst$comparison
   hm.rows <- match(rownames(tt)[1:n.hm.genes], rownames(dge$counts))
   table <- dge$counts[hm.rows, hm.cols]
-  write.csv(tt, paste0(test.base.dir, test.name, "_sampletable.csv"))
+  write.csv(table, paste0(test.base.dir, test.name, "_sampletable.csv"))
 
   # plots
   pdf(paste0(test.base.dir, test.name, "_smear.pdf"))
