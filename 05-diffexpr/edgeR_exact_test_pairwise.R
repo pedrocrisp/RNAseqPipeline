@@ -179,7 +179,7 @@ for (tst in tests) {
   # plots
   pdf(paste0(test.base.dir, test.name, "_smear.pdf"))
   plotSmear(
-      dge,
+      tst,
       de.tags=detags,
       main=test.name,
       sub=paste("lines indicate", xf, "fold change")
