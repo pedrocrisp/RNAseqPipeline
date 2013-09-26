@@ -21,6 +21,7 @@ then
 	exit -1
 fi
 
+alias timestamp='date +%Y%m%d-%H%M%S'
 
 ########## Run #################
 
