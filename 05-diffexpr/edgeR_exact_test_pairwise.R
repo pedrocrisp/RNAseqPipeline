@@ -66,6 +66,8 @@ gene.names <- as.character(rownames(dge$counts))
 
 # TODO: DESeq style variance stabilisng transform to allow statisical comparison
 # of low abundance -> high abundance transcripts.
+# TODO: Also need to add rRNA filtering
+
 groups <- unique(sample.groups)
 n.samples <- length(sample.groups)
 n.reps <- n.samples / length(groups)
