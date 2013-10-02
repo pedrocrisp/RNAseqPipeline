@@ -33,7 +33,7 @@ analysis.name <- unlist(
   strsplit(rev(unlist(strsplit(keyfile.path, "/")))[1], "\\."))[1]
 
 out.base <- paste0("./de/", analysis.name, "/")
-dir.create(out.base, recursive=T)
+dir.create(out.base, recursive=T, showWarnings=F)
 
 
 ################################################################################
@@ -42,7 +42,12 @@ dir.create(out.base, recursive=T)
 
 count.files <- paste0("count/", samples, "/", samples, ".counts")
 
-sample.groups <- apply(as.matrix(keyfile[,3:length(keyfile)]), 1, paste, collapse=" ")
+sample.groups <- apply(
+  as.matrix(keyfile[,3:length(keyfile)]),
+  1,
+  paste,
+  collapse=" "
+  )
 
 tmp <- read.delim(count.files[[1]])
 gene.lengths <- as.numeric(tmp[,2])
@@ -123,7 +128,7 @@ if (fancy.filter) {
 	loci.2.keep <- ms.keep & mr.keep
 } else {
 	# A simple filter:
-	# Only loci with more than 10 counts in at least `n.reps` samples
+	# Only loci with more than 10 counts per million in at least `n.reps` samples
 	# are kept
 
 	loci.2.keep <- rowSums(dge$counts > 10) > n.reps
@@ -141,7 +146,7 @@ gene.names <- gene.names[loci.2.keep]
 
 ## edgeR normalisation and dispersion calculation ###
 dge <- calcNormFactors(dge, method="TMM")
-dge <- estimateCommonDisp(dge)
+dge <- estimateCommonDisp(dge, verbose=TRUE)
 dge <- estimateTagwiseDisp(dge)
 
 
@@ -207,7 +212,7 @@ redblue <- paste0(
 for (tst in tests) {
   test.name <- paste(tst$comparison, collapse=".VS.")
   test.base.dir <- paste0(out.base, test.name, "/")
-  dir.create(test.base.dir)
+  dir.create(test.base.dir, showWarnings=F)
 
   decision <- decideTestsDGE(tst, p=0.05)
   print(test.name)
@@ -221,7 +226,7 @@ for (tst in tests) {
 
   hm.cols <- sample.groups %in% tst$comparison
   hm.rows <- match(rownames(tt)[1:n.hm.genes], rownames(dge$counts))
-  table <- dge$counts[hm.rows, hm.cols]
+  table <- dge$counts[, hm.cols]
   write.csv(table, paste0(test.base.dir, test.name, "_sampletable.csv"))
 
   # plots
