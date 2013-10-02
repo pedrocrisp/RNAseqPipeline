@@ -42,7 +42,6 @@ dir.create(out.base, recursive=T)
 
 count.files <- paste0("count/", samples, "/", samples, ".counts")
 
-
 sample.groups <- apply(as.matrix(keyfile[,3:length(keyfile)]), 1, paste, collapse=" ")
 
 tmp <- read.delim(count.files[[1]])
@@ -97,6 +96,9 @@ print(rRNA.rates)
 # remove rRNA from dge matrix
 dge$counts <- dge$counts[-rRNA.tags,]
 
+
+### Remove Sparse Tags ###
+
 groups <- unique(sample.groups)
 n.samples <- length(sample.groups)
 n.reps <- n.samples / length(groups)
@@ -137,6 +139,7 @@ dge$samples$lib.size <- colSums(dge$counts)
 old.gene.names <- gene.names
 gene.names <- gene.names[loci.2.keep]
 
+## edgeR normalisation and dispersion calculation ###
 dge <- calcNormFactors(dge, method="TMM")
 dge <- estimateCommonDisp(dge)
 dge <- estimateTagwiseDisp(dge)
@@ -175,7 +178,7 @@ nice.sample.names <- paste(
   sep=".R"
 )
 
-# global plots
+### global plots ###
 pdf(paste0(out.base, analysis.name, "_bcv.pdf"))
 plotBCV(dge, main=analysis.name)
 dev.off()
