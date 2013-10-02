@@ -6,6 +6,9 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
+alias timestamp='date +%Y%m%d-%H%M%S'
+alias usage="echo 'run.sh <keyfile>'"
+
 
 ######### Setup ################
 keyfile=$1
@@ -13,7 +16,12 @@ keyfile=$1
 # kefile format: (tab seperated)
 #Ordinal	Sample	<factor1_name> [<factor2_name>]
 
-##### Check env ####
+if [ ! -r $keyfile ]
+then
+	echo "Must provide kefile"
+	usage
+	exit -1
+fi
 
 if [ ! -d count ]
 then
@@ -21,11 +29,11 @@ then
 	exit -1
 fi
 
-alias timestamp='date +%Y%m%d-%H%M%S'
 
 ########## Run #################
 
 cat $0
+
 ## enter steps ##
 
 # step 2: differential expression
