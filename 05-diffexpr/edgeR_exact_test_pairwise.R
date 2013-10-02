@@ -184,6 +184,11 @@ nice.sample.names <- paste(
   sep=".R"
 )
 
+agi.fd <- read.delim("ftp://ftp.arabidopsis.org/home/tair/Genes/TAIR10_genome_release/TAIR10_functional_descriptions")
+agi.fd$AGI <- substr(agi.fd$Model_name, 1, 9)
+agi.fd[1,]
+
+
 ### global plots ###
 pdf(paste0(out.base, analysis.name, "_bcv.pdf"))
 plotBCV(dge, main=analysis.name)
@@ -222,8 +227,10 @@ for (tst in tests) {
 
   # tables for this test
   tt <- topTags(tst, n=n.tags)
+  tt$short_description <- agi.fd$Short_description[agi.match]
+  tt$curator_summary <- agi.fd$Curator_summary[agi.match]
+  tt$computational_description <- agi.fd$Computational_description[agi.match]
   write.csv(tt, paste0(test.base.dir, test.name, "_toptags.csv"))
-
 
   hm.cols <- sample.groups %in% tst$comparison
   hm.rows <- match(rownames(tt)[1:n.hm.genes], rownames(dge$counts))

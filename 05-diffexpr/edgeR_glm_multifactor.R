@@ -231,6 +231,10 @@ for (tn in 1:n.tests) {
 
   # tables for this test
   tt <- topTags(tst, n=n.tags)
+  agi.match <- match(detags, agi.fd$AGI)
+  tt$short_description <- agi.fd$Short_description[agi.match]
+  tt$curator_summary <- agi.fd$Curator_summary[agi.match]
+  tt$computational_description <- agi.fd$Computational_description[agi.match]
   write.csv(tt, paste0(test.base.dir, test.name, "_toptags.csv"))
 
   hm.cols <- sample.groups %in% names(which(contrasts[,tn] !=0))
