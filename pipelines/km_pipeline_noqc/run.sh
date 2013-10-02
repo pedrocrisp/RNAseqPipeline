@@ -6,12 +6,22 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
+alias timestamp='date +%Y%m%d-%H%M%S'
+alias usage="echo 'run.sh <keyfile>'"
+
 
 ######### Setup ################
 keyfile=$1
 
 # kefile format: (tab seperated)
 #Ordinal	Sample	<factor1_name> [<factor2_name>]
+
+if [ ! -r $keyfile ]
+then
+	echo "Must provide kefile"
+	usage
+	exit -1
+fi
 
 
 ########## Run #################
@@ -25,8 +35,12 @@ function getSamples() {
 echo "Samples are:"
 echo "$(getSamples)"
 
+cat $0
+
 ## enter steps ##
 
 # step 1: from raw reads until counts
-mkdir -p ./log/1-until_counts/
-getSamples |parallel bash ${scriptdir}/1-until_counts.sh {} \>./log/1-until_counts/{}.log 2\>\&1
+mkdir -p ./log/until_counts/
+script=${scriptdir}/until_counts.sh
+cat $script
+getSamples |parallel bash ${script} {} \>./log/until_counts.`timestamp`/{}.log 2\>\&1
