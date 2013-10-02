@@ -66,7 +66,36 @@ gene.names <- as.character(rownames(dge$counts))
 
 # TODO: DESeq style variance stabilisng transform to allow statisical comparison
 # of low abundance -> high abundance transcripts.
-# TODO: Also need to add rRNA filtering
+
+### find and remove rRNAs from analysis. ###
+rRNA <-  c("AT2G01010",
+           "AT2G01020",
+           "AT3G41768",
+           "AT3G41979",
+           "ATCG00920",
+           "ATCG00950",
+           "ATCG00960",
+           "ATCG00970",
+           "ATCG01160",
+           "ATCG01170",
+           "ATCG01180",
+           "ATCG01210",
+           "ATMG00020",
+           "ATMG01380",
+           "ATMG01390"
+	   )
+
+# find rRNAs
+rRNA.tags <- match(rRNA, gene.names)
+
+# count rRNAs
+rRNAs <- dge$counts[rRNA.tags,]
+rRNA.summary <- colSums(rRNAs)
+rRNA.rates <- rRNA.summary / dge$samples$lib.size
+print(rRNA.rates)
+
+# remove rRNA from dge matrix
+dge$counts <- dge$counts[-rRNA.tags,]
 
 groups <- unique(sample.groups)
 n.samples <- length(sample.groups)
