@@ -72,22 +72,23 @@ gene.names <- as.character(rownames(dge$counts))
 # of low abundance -> high abundance transcripts.
 
 ### find and remove rRNAs from analysis. ###
-rRNA <-  c("AT2G01010",
-           "AT2G01020",
-           "AT3G41768",
-           "AT3G41979",
-           "ATCG00920",
-           "ATCG00950",
-           "ATCG00960",
-           "ATCG00970",
-           "ATCG01160",
-           "ATCG01170",
-           "ATCG01180",
-           "ATCG01210",
-           "ATMG00020",
-           "ATMG01380",
-           "ATMG01390"
-	   )
+rRNA <-  c(
+  "AT2G01010",
+  "AT2G01020",
+  "AT3G41768",
+  "AT3G41979",
+  "ATCG00920",
+  "ATCG00950",
+  "ATCG00960",
+  "ATCG00970",
+  "ATCG01160",
+  "ATCG01170",
+  "ATCG01180",
+  "ATCG01210",
+  "ATMG00020",
+  "ATMG01380",
+  "ATMG01390"
+  )
 
 # find rRNAs
 rRNA.tags <- match(rRNA, gene.names)
@@ -111,27 +112,27 @@ n.reps <- n.samples / length(groups)
 fancy.filter <- FALSE
 
 if (fancy.filter) {
-	# A smart-arsed filter which is supposed to tolerate different
-	# experimental designs, but really just confuses the user.
-	# Use with caution.
+  # A smart-arsed filter which is supposed to tolerate different
+  # experimental designs, but really just confuses the user.
+  # Use with caution.
 
-	min.avg.reads.per.sample <- 0.5 # cpm, invariant
-	min.total.reads <- min.avg.reads.per.sample * n.samples
-	min.samples.with.reads <- ((n.samples / n.reps) * 0.5) + n.reps
+  min.avg.reads.per.sample <- 0.5 # cpm, invariant
+  min.total.reads <- min.avg.reads.per.sample * n.samples
+  min.samples.with.reads <- ((n.samples / n.reps) * 0.5) + n.reps
 
-	mr.keep <- rowSums(cpm(dge)) > min.total.reads
-	table(mr.keep)
+  mr.keep <- rowSums(cpm(dge)) > min.total.reads
+  table(mr.keep)
 
-	ms.keep <- rowSums(cpm(dge) > 0) > min.samples.with.reads
-	table(ms.keep)
+  ms.keep <- rowSums(cpm(dge) > 0) > min.samples.with.reads
+  table(ms.keep)
 
-	loci.2.keep <- ms.keep & mr.keep
+  loci.2.keep <- ms.keep & mr.keep
 } else {
-	# A simple filter:
-	# Only loci with more than 10 counts per million in at least `n.reps` samples
-	# are kept
+  # A simple filter:
+  # Only loci with more than 10 counts per million in at least `n.reps` samples
+  # are kept
 
-	loci.2.keep <- rowSums(dge$counts > 10) > n.reps
+  loci.2.keep <- rowSums(dge$counts > 10) > n.reps
 }
 
 table(loci.2.keep)
