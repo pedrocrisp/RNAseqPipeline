@@ -6,12 +6,22 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
+alias timestamp='date +%Y%m%d-%H%M%S'
+alias usage="echo 'run.sh <keyfile>'"
+
 
 ######### Setup ################
 keyfile=$1
 
 # kefile format: (tab seperated)
 #Ordinal	Sample	<factor1_name> [<factor2_name>]
+
+if [ ! -r $keyfile ]
+then
+	echo "Must provide kefile"
+	usage
+	exit -1
+fi
 
 
 ########## Run #################
@@ -25,7 +35,11 @@ function getSamples() {
 echo "Samples are:"
 echo "$(getSamples)"
 
+cat $0
+
 ## enter steps ##
 
 mkdir -p ./log/make_igv_bams/
-getSamples |parallel bash ${scriptdir}/make_igv_bams.sh {} \>./log/make_igv_bams/{}.log 2\>\&1
+script=${scriptdir}/make_igv_bams.sh
+cat $script
+getSamples |parallel bash ${script} {} \>./log/make_igv_bams.`timestamp`/{}.log 2\>\&1
