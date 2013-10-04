@@ -40,8 +40,13 @@ cat $0
 ## enter steps ##
 
 # step 1: from raw reads until counts
-mkdir ./log/until_counts/
+mkdir ./log/until_counts
 script=${scriptdir}/until_counts.sh
 cat $script
 getSamples |parallel bash ${script} {} \>./log/until_counts.`timestamp`/{}.log 2\>\&1
 
+# step 2: differential expression
+mkdir ./de
+script="${basedir}/05-diffexpr/edgeR_pairwise.R"
+cat $script
+R -f $script --args $keyfile >./log/de.`timestamp`.log
