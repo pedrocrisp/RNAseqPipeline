@@ -275,6 +275,9 @@ fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="arr
 rownames(fc.matrix) <- gene.names
 rownames(p.matrix) <- gene.names
 rownames(fdr.matrix) <- gene.names
+colnames(fc.matrix) <- test.names
+colnames(p.matrix) <- test.names
+colnames(fdr.matrix) <- test.names
 
 cpm.matrix <- cpm(dge, log=T)
 colnames(cpm.matrix) <- nice.sample.names
