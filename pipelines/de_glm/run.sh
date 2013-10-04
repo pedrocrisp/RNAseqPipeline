@@ -46,6 +46,6 @@ cat $0
 
 # step 2: differential expression
 mkdir -p ./de
-script="${basedir}/edgeR_glm_multifactor.R"
+script="${basedir}/edgeR_glm.R"
 cat $script
 R -f ${script} --args $keyfile $rconffile >./log/de.`timestamp`.log

@@ -38,6 +38,6 @@ cat $0
 
 # step 2: differential expression
 mkdir ./de
-script="${basedir}/05-diffexpr/edgeR_exact_test_pairwise.R"
+script="${basedir}/05-diffexpr/edgeR_pairwise.R"
 cat $script
 R -f $script --args $keyfile >./log/de.`timestamp`.log
