@@ -17,7 +17,7 @@ library(gplots)
 # FDR.cutoff <- 0.05 # or other
 
 ARGV <- commandArgs(trailingOnly=TRUE)
-ARGV <- c("kevin_hons/kevin-hons.key", '~/prog/bio/honsPipeline/pipelines/de_glm/edgeR_kmhons.R')
+
 if (length(ARGV) < 2) {
   stop("USAGE: edgeR_glm.R --args <keyfile> <paramfile>")
   q(status=-1)
