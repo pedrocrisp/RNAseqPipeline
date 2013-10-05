@@ -10,7 +10,7 @@ source "$basedir/common.sh"
 getDefaultOptions $@
 
 sample=$(basename $input)
-fqFiles="$(ls $input/*.f[aq]*)"
+fqFiles="$(findFastqFiles $input)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
 outbam="${output}/${sample}" # no .bam, as samtools sort -f has a bug.

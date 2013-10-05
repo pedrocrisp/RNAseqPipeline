@@ -8,15 +8,15 @@ source "$basedir/common.sh"
 
 getDefaultOptions $@
 
-bamfile="$(find ${input} -name \*.bam)"
-if [ -z "${bamfile}" ]; then bamfile="$(find ${input} -name \*.sam)"; fi
+bamfile="$(findBAMFiles ${input})"
+if [ -z "${bamfile}" ]; then samfile="$(findSAMFiles ${input})"; fi
 
-if [ -n "$(echo $bamfile | grep sam)" ]
+if [ -n "$bamfile" ]
 then
 	# sam
-	echo "featureCounts -i \"$bamfile\" -o \"$output/$(basename $output).counts\" $args"
-	featureCounts -i "$bamfile" -o "$output/$(basename $output).counts" $args
-elif [ -n "$(echo $bamfile | grep bam)" ]
+	echo "featureCounts -i \"$samfile\" -o \"$output/$(basename $output).counts\" $args"
+	featureCounts -i "$samfile" -o "$output/$(basename $output).counts" $args
+elif [ -n "$bamfile" ]
 then
 	# bam
 	echo "featureCounts -b -i \"$bamfile\" -o \"$output/$(basename $output).counts\" $args"

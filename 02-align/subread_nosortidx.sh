@@ -9,7 +9,7 @@ source "$basedir/common.sh"
 getDefaultOptions $@
 
 sample=$(basename $input)
-fqFiles="$(ls $input/*.f[aq]*)"
+fqFiles="$(findFastqFiles $input)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
 outsam="${output}/${sample}.sam"

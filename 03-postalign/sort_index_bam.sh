@@ -8,7 +8,7 @@ source "$basedir/common.sh"
 
 getDefaultOptions $@
 
-sams=$(find $input -type f -name *.sam -not -name *.sorted.sam)
+sams=$(findSAMFiles $input)
 
 for sam in $sams
 do
@@ -20,7 +20,7 @@ do
 		samtools index $outbam
 done
 
-bams=$(find $input -type f -name *.bam -not -name *.sorted.bam)
+bams=$(findBAMFiles $input)
 for bam in $bams
 do
 	sample="$(basename $bam)"

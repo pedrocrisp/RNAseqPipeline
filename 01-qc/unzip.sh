@@ -7,7 +7,7 @@ basedir="$scriptdir/.."
 source "$basedir/common.sh"
 getDefaultOptions $@
 
-for fq in $input/*.f[aq]*
+for fq in $(findFastqFiles $input)
 do
 	fqname="$(basename $fq)"
 	outputFile="$output/${fqname%%.*}.noadapt.fq.gz"
