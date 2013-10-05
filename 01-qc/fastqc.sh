@@ -7,7 +7,7 @@ basedir="$scriptdir/.."
 source "$basedir/common.sh"
 getDefaultOptions $@
 
-fqfiles=$(findFastqFiles $input)
+fqfiles=$(findFastqFiles $input/)
 
 echo fastqc $args -o "$output" $fqfiles
 fastqc $args -o "$output" $fqfiles

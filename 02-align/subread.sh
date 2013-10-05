@@ -8,8 +8,8 @@ source "$basedir/common.sh"
 
 getDefaultOptions $@
 
-sample=$(basename $input)
-fqFiles="$(findFastqFiles $input)"
+sample=$(basename $input/)
+fqFiles="$(findFastqFiles $input/)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
 outsam="${output}/${sample}.sam"

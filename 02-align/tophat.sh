@@ -9,8 +9,8 @@ source "$basedir/common.sh"
 # order of arguments to tophat.sh is important. Ref base must be given to -a, without an argument, and must be the last argument
 getDefaultOptions $@
 
-sample=$(basename $input)
-fqFiles="$(findFastqFiles $input)"
+sample=$(basename $input/)
+fqFiles="$(findFastqFiles $input/)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
 outbam="${output}/${sample}" # no .bam, as samtools sort -f has a bug.
