@@ -12,6 +12,6 @@ do
 	fqname="$(basename $fq)"
 	sample=$(basename $output)
 	outputFile="$output/${fqname%%.*}.$args.fq.gz"
-	echo "seqtk sample \"$fq\" $args | gzip - >\"$outputFile\""
-	seqtk sample "$fq" $args | gzip - >"$outputFile"
+	echo "seqtk sample $fq $args | gzip - >\"$outputFile\""
+	seqtk sample $fq $args | gzip - >"$outputFile"
 done

@@ -18,14 +18,14 @@ tmpbam="${output}/${RANDOM}.bam"
 
 if [ ${numFqFiles} -eq 1 ]
 then
-	echo subjunc $args -r "$fqFiles" -o "$outsam"
-	subjunc $args -r "$fqFiles" -o "$outsam"
+	echo subjunc $args -r $fqFiles -o "$outsam"
+	subjunc $args -r $fqFiles -o "$outsam"
 elif [ ${numFqFiles} -eq 2 ]
 then
 	fq1="$(echo $fqFiles |cut -d ' ' -f 1)"
 	fq2="$(echo $fqFiles |cut -d ' ' -f 2)"
-	echo subjunc $args -r "${fq1}" -R "${fq2}" -o "$outsam"
-	subjunc $args -r "${fq1}" -R "${fq2}" -o "$outsam"
+	echo subjunc $args -r ${fq1} -R ${fq2} -o "$outsam"
+	subjunc $args -r ${fq1} -R ${fq2} -o "$outsam"
 else
 	echo "ERROR: not able to align multiple fq files per pair"
 	echo "fqFiles:"

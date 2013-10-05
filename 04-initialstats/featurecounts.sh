@@ -11,14 +11,14 @@ getDefaultOptions $@
 bamfile="$(findBAMFiles ${input})"
 if [ -z "${bamfile}" ]; then samfile="$(findSAMFiles ${input})"; fi
 
-if [ -n "$bamfile" ]
+if [ -n "$samfile" ]
 then
 	# sam
-	echo "featureCounts -i \"$samfile\" -o \"$output/$(basename $output).counts\" $args"
-	featureCounts -i "$samfile" -o "$output/$(basename $output).counts" $args
+	echo "featureCounts -i $samfile -o \"$output/$(basename $output).counts\" $args"
+	featureCounts -i $samfile -o "$output/$(basename $output).counts" $args
 elif [ -n "$bamfile" ]
 then
 	# bam
-	echo "featureCounts -b -i \"$bamfile\" -o \"$output/$(basename $output).counts\" $args"
-	featureCounts -b -i "$bamfile" -o "$output/$(basename $output).counts" $args
+	echo "featureCounts -b -i $bamfile -o \"$output/$(basename $output).counts\" $args"
+	featureCounts -b -i $bamfile -o "$output/$(basename $output).counts" $args
 fi

@@ -18,14 +18,14 @@ tophatbam="${output}/tophat_out/accepted_hits.bam"
 
 if [ ${numFqFiles} -eq 1 ]
 then
-	echo tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args "$fqFiles"
-	tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args "$fqFiles"
+	echo tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args $fqFiles
+	tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args $fqFiles
 elif [ ${numFqFiles} -eq 2 ]
 then
 	fq1="$(echo $fqFiles |cut -d ' ' -f 1)"
 	fq2="$(echo $fqFiles |cut -d ' ' -f 2)"
-	echo tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args "${fq1}" "${fq2}"
-	tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args "${fq1}" "${fq2}"
+	echo tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args ${fq1} ${fq2}
+	tophat --keep-fasta-order --rg-library ${sample} -o "$output/tophat_out" $args ${fq1} ${fq2}
 else
 	echo "ERROR: not able to align multiple fq files per pair"
 	echo "fqFiles:"
