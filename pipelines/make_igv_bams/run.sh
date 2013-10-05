@@ -6,7 +6,7 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
-alias timestamp='date +%Y%m%d-%H%M%S'
+timestamp=$(date +%Y%m%d-%H%M%S)
 alias usage="echo 'run.sh <keyfile>'"
 
 
@@ -29,7 +29,7 @@ fi
 sort -o $keyfile -k1n $keyfile
 
 function getSamples() {
-	grep -iv Ordinal < $keyfile | cut -f 2
+	grep -iv Ordinal < $keyfile | cut -f 2 | grep --color=never "."
 }
 
 echo "Samples are:"
@@ -39,7 +39,9 @@ cat $0
 
 ## enter steps ##
 
-mkdir -p ./log/make_igv_bams/
+# make BAM files suitable for IGV
 script=${scriptdir}/make_igv_bams.sh
+logdir="./log/make_igv_bams.${timestamp}"
+mkdir -p $logdir
 cat $script
-getSamples |parallel bash ${script} {} \>./log/make_igv_bams.`timestamp`/{}.log 2\>\&1
+getSamples |parallel bash ${script} {} \>${logdir}/{}.log 2\>\&1

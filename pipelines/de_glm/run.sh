@@ -6,7 +6,7 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
-alias timestamp='date +%Y%m%d-%H%M%S'
+timestamp=$(date +%Y%m%d-%H%M%S)
 alias usage="echo 'run.sh <keyfile> <r_config_file>'"
 
 
@@ -43,9 +43,11 @@ fi
 cat $0
 ## enter steps ##
 
-
-# step 2: differential expression
 mkdir -p ./de
+
+# differential expression
 script="${basedir}/edgeR_glm.R"
+logdir="./log/de.${timestamp}"
+mkdir -p $logdir
 cat $script
-R -f ${script} --args $keyfile $rconffile >./log/de.`timestamp`.log
+R -f ${script} --args $keyfile $rconffile >${logdir}/edgeR_glm.log

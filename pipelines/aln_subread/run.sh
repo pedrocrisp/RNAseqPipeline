@@ -6,9 +6,8 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
-alias timestamp='date +%Y%m%d-%H%M%S'
+timestamp=$(date +%Y%m%d-%H%M%S)
 alias usage="echo 'run.sh <keyfile>'"
-
 
 ######### Setup ################
 keyfile=$1
@@ -29,7 +28,7 @@ fi
 sort -o $keyfile -k1n $keyfile
 
 function getSamples() {
-	grep -iv Ordinal < $keyfile | cut -f 2
+	grep -iv Ordinal < $keyfile | cut -f 2 | grep --color=never "."
 }
 
 echo "Samples are:"
@@ -39,8 +38,9 @@ cat $0
 
 ## enter steps ##
 
-# step 1: from raw reads until counts
-mkdir ./log/until_counts/
+# from raw reads until counts
 script=${scriptdir}/until_counts.sh
+logdir="./log/until_counts.${timestamp}"
+mkdir -p $logdir
 cat $script
-getSamples |parallel bash ${script} {} \>./log/until_counts.`timestamp`/{}.log 2\>\&1
+getSamples |parallel bash ${script} {} \>${logdir}/{}.log 2\>\&1

@@ -54,7 +54,7 @@ time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/$
 # enter any additional qc here
 
 pushd qcd > /dev/null
-ln -s ${qcstep}/${sample} ${sample}
+ln -s $(readlink -f ${qcstep}/${sample}) ${sample}
 popd >/dev/null
 
 echo "Run FastQC after all QC steps"

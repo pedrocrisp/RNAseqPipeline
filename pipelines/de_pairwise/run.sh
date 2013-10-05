@@ -6,7 +6,7 @@ basedir="$scriptdir/../../"
 
 source "$basedir/common.sh"
 
-alias timestamp='date +%Y%m%d-%H%M%S'
+timestamp=$(date +%Y%m%d-%H%M%S)
 alias usage="echo 'run.sh <keyfile>'"
 
 
@@ -36,8 +36,11 @@ cat $0
 
 ## enter steps ##
 
-# step 2: differential expression
-mkdir ./de
+mkdir -p de
+
+# differential expression
 script="${basedir}/05-diffexpr/edgeR_pairwise.R"
+logdir="./log/de.${timestamp}"
+mkdir -p $logdir
 cat $script
-R -f $script --args $keyfile >./log/de.`timestamp`.log
+R -f $script --args $keyfile >${logdir}/{}.log 2>&1
