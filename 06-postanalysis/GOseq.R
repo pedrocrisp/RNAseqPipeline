@@ -2,7 +2,7 @@ library(goseq)
 library(multicore)
 
 ARGV <- commandArgs(trailingOnly=TRUE)
-ARGV <- c("de/kevin-hons-277-R60/kevin-hons-277-R60_fdr.csv")
+
 if (length(ARGV) < 1) {
   stop("USAGE: GOseq.R --args <fdr.table> [<goslim mapping> [<gff>]]")
   q(status=-1)
