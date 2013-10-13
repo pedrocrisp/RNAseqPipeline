@@ -4,14 +4,14 @@ library(multicore)
 ARGV <- commandArgs(trailingOnly=TRUE)
 
 if (length(ARGV) < 1) {
-  stop("USAGE: GOseq.R --args <fdr.table> [<goslim mapping> [<gff>]]")
+  stop("USAGE: GOseq.R --args <test.table> [<goslim mapping> [<gff>]]")
   q(status=-1)
 }
 
 out.base <- "go/"
 dir.create(out.base, showWarnings=F)
 
-fdr.path <- ARGV[1]
+test.path <- ARGV[1]
 
 tair <- "ftp://ftp.arabidopsis.org/home/tair/"
 if (length(ARGV) == 2) {
@@ -23,7 +23,10 @@ if (length(ARGV) == 2) {
 if (length(ARGV) == 3) {
   gff.path <- ARGV[3]
 } else {
-  gff.path <- paste0(tair, "Genes/TAIR10_genome_release/TAIR10_gff3/TAIR10_GFF3_genes.gff")
+  gff.path <- paste0(
+    tair,
+    "Genes/TAIR10_genome_release/TAIR10_gff3/TAIR10_GFF3_genes.gff"
+    )
 }
 
 # grab go table from tair
@@ -49,18 +52,18 @@ gene.lengths <- gff[,5] - gff[,4] + 1
 names(gene.lengths) <- agis
 
 
-fdr <- read.csv(fdr.path)
-rownames(fdr) <- as.character(fdr[,1])
-fdr <- as.matrix(fdr[,2:length(fdr)])
+test <- read.csv(test.path)
+rownames(test) <- as.character(test[,1])
+test <- as.matrix(test[,2:length(test)])
 
-summary(fdr)
+summary(test)
 
-all.genes <- rownames(fdr)
+all.genes <- rownames(test)
 gene.lengths <- gene.lengths[match(all.genes, names(gene.lengths))]
 
 goTestIndex <- function(tn) {
-  tst <- fdr[,tn]
-  test.name <- colnames(fdr)[tn]
+  tst <- test[,tn]
+  test.name <- colnames(test)[tn]
   de.genes <- as.integer(tst < 0.05)
   names(de.genes) <- all.genes
   pwf <- nullp(de.genes, "tair10", id=all.genes, bias.data=gene.lengths)
@@ -70,10 +73,23 @@ goTestIndex <- function(tn) {
   go.all$GOterm <- this.go$GOterm
   go.all$sig <- go.all$over_represented_pvalue < 0.05
   row.names(go.all) <- NULL
-  
+
   out.name <- paste0(out.base, test.name, ".goall.csv")
   print(out.name)
   write.csv(go.all, out.name, row.names=F)
+  go.all
 }
 
-GA <- mclapply(1:ncol(fdr), goTestIndex)
+GA <- mclapply(1:ncol(test), goTestIndex)
+
+terms <- sapply(
+  GA,
+  function(x) {
+    b <- x[,"GOterm"]
+    b[!x[,"sig"]] <- ""
+    b
+    },
+  simplify="array"
+  )
+colnames(terms) <- colnames(test)
+write.csv(terms, paste0(out.base, "terms.csv"), row.names=F)
