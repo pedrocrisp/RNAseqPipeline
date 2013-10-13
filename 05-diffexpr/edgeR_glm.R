@@ -135,13 +135,13 @@ if (fancy.filter) {
   # A simple filter:
   # Only loci with more than 10 counts per million in at least `n.reps` samples
   # are kept
-
   loci.2.keep <- rowSums(dge$counts > 10) > n.reps
 }
 
 table(loci.2.keep)
 n.tags <- sum(loci.2.keep) # sum of true values, i.e. count all genes to keep
-gene.names.keep <- gene.names[loci.2.keep]
+gene.names.keep <- as.character(rownames(dge$counts))[loci.2.keep]
+length(gene.names.keep)
 
 old.dge <- dge
 dge <- old.dge[loci.2.keep,]
@@ -187,16 +187,15 @@ short.names <- paste(
   substr(sample.groups, 0, 4),
   rep_len(1:n.reps, length(sample.groups)),
   sep="R"
-)
+  )
 nice.sample.names <- paste(
   sample.groups,
   rep_len(1:n.reps, length(sample.groups)),
   sep=".R"
-)
+  )
 
 agi.fd <- read.delim("ftp://ftp.arabidopsis.org/home/tair/Genes/TAIR10_genome_release/TAIR10_functional_descriptions")
 agi.fd$AGI <- substr(agi.fd$Model_name, 1, 9)
-agi.fd[1,]
 
 
 ### global plots ###
@@ -305,8 +304,8 @@ for (tn in 1:n.tests) {
 }
 
 pfc.matrix <- predFC(dge)
-fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
-p.matrix <- sapply(tests, function (t) t$table$PValue, simplify = "array")
+fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify="array")
+p.matrix <- sapply(tests, function (t) t$table$PValue, simplify="array")
 fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="array")
 rownames(fc.matrix) <- gene.names.keep
 rownames(p.matrix) <- gene.names.keep
