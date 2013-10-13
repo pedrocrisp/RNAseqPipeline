@@ -7,7 +7,8 @@ basedir="$scriptdir/../../"
 source "$basedir/common.sh"
 
 timestamp=$(date +%Y%m%d-%H%M%S)
-alias usage="echo 'run.sh <keyfile>'"
+usage="USAGE:
+run.sh <keyfile>"
 
 ######### Setup ################
 keyfile=$1
@@ -18,7 +19,7 @@ keyfile=$1
 if [ ! -r $keyfile ]
 then
 	echo "Must provide kefile"
-	usage
+	echo $usage
 	exit -1
 fi
 

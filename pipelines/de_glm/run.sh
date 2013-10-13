@@ -7,7 +7,8 @@ basedir="$scriptdir/../../"
 source "$basedir/common.sh"
 
 timestamp=$(date +%Y%m%d-%H%M%S)
-alias usage="echo 'run.sh <keyfile> <r_config_file>'"
+usage="USAGE:
+run.sh <keyfile> <r_config_file>'"
 
 
 ######### Setup ################
@@ -20,21 +21,21 @@ rconffile=$2
 if [ ! -d count ]
 then
 	echo "No ./count directory"
-	usage
+	echo $usage
 	exit -1
 fi
 
 if [ ! -r $keyfile ]
 then
 	echo "Must provide kefile"
-	usage
+	echo $usage
 	exit -1
 fi
 
 if [ ! -r $rconffile ]
 then
 	echo "Must provide R configuration file"
-	usage
+	echo $usage
 	exit -1
 fi
 
