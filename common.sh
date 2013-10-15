@@ -41,11 +41,11 @@ function findFastqFiles () {
 }
 
 function findBAMFiles () {
-	find $1 -name \*.bam -print0 |sed -e 's/ /\\ /g' -e 's/\x0/ /g'
+	find $1 -maxdepth 1 -name \*.bam -print0 |sed -e 's/ /\\ /g' -e 's/\x0/ /g'
 }
 
 function findSAMFiles () {
-	find $1 -name \*.sam -print0 |sed -e 's/ /\\ /g' -e 's/\x0/ /g'
+	find $1 -maxdepth 1 -name \*.sam -print0 |sed -e 's/ /\\ /g' -e 's/\x0/ /g'
 }
 
 alias check_return="if [ $? -ne 0] ; then exit $?; fi"
