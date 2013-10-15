@@ -44,4 +44,4 @@ script="${basedir}/05-diffexpr/edgeR_pairwise.R"
 logdir="./log/de.${timestamp}"
 mkdir -p $logdir
 cat $script
-R -f $script --args $keyfile >${logdir}/{}.log 2>&1
+R -f $script --args $keyfile >${logdir}/edgeR_pairwise.log 2>&1
