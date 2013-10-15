@@ -13,7 +13,7 @@ sample=$(basename $input/)
 fqFiles="$(findFastqFiles $input/)"
 numFqFiles=$(echo $fqFiles | wc -w)
 
-outbam="${output}/${sample}" # no .bam, as samtools sort -f has a bug.
+outbam="${output}/${sample}.bam"
 tophatbam="${output}/tophat_out/accepted_hits.bam"
 
 if [ ${numFqFiles} -eq 1 ]
@@ -34,8 +34,9 @@ else
 fi
 
 
-echo "ln -s $tophatbam $outbam
+echo "ln -s $(readlink -f $tophatbam) $outbam
 samtools index ${outbam}.bam"
 
-ln -s $tophatbam $outbam
+
+ln -s $(readlink -f $tophatbam) $outbam
 samtools index ${outbam}.bam
