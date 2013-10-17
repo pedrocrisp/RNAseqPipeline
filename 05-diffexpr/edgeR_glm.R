@@ -207,7 +207,8 @@ pdf(paste0(out.base, analysis.name, "_mds.pdf"))
 plotMDS(dge,
   main=analysis.name,
   labels=nice.sample.names,
-  col=rep(rainbow(length(groups)), each=n.reps)
+  col=rep(rainbow(length(groups)), each=n.reps),
+  top=n.tags
 )
 dev.off()
 
@@ -303,7 +304,8 @@ for (tn in 1:n.tests) {
   dev.off()
 }
 
-pfc.matrix <- predFC(dge)
+
+# test-wise matricies
 fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify="array")
 p.matrix <- sapply(tests, function (t) t$table$PValue, simplify="array")
 fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="array")
@@ -314,11 +316,28 @@ colnames(fc.matrix) <- test.names
 colnames(p.matrix) <- test.names
 colnames(fdr.matrix) <- test.names
 
+write.csv(fc.matrix, file=paste0(out.base, analysis.name, "_fc.csv"))
+write.csv(fdr.matrix, file=paste0(out.base, analysis.name, "_fdr.csv"))
+write.csv(p.matrix, file=paste0(out.base, analysis.name, "_p.csv"))
+
+
+# conglomerate the above test stat matricies into a big table (3D array)
+all.array <- array(c(fc.matrix, p.matrix, fdr.matrix), c(3, dim(fc.matrix)))
+dimnames(all.array) <- list(
+  c("fc", "p", "fdr"),
+  rownames(fc.matrix),
+  colnames(fc.matrix)
+  )
+all.df<-as.data.frame.table(all.array)
+names(all.df) <- c("stat", "geneid", "test", "value")
+rm(all.array)
+write.csv(all.df, file=paste0(out.base, analysis.name, "_allstat.csv"))
+
+
+# sample-wise matrices
+pfc.matrix <- predFC(dge)
 cpm.matrix <- cpm(dge, log=T)
 colnames(cpm.matrix) <- nice.sample.names
 
 write.csv(cpm.matrix, file=paste0(out.base, analysis.name, "_cpm.csv"))
-write.csv(fc.matrix, file=paste0(out.base, analysis.name, "_fc.csv"))
 write.csv(pfc.matrix, file=paste0(out.base, analysis.name, "_pfc.csv"))
-write.csv(fdr.matrix, file=paste0(out.base, analysis.name, "_fdr.csv"))
-write.csv(p.matrix, file=paste0(out.base, analysis.name, "_p.csv"))
