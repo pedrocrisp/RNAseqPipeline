@@ -215,7 +215,7 @@ redblue <- paste0(
   as.hexmode(c(127:1 * 2, rep(0, 128)))
 )
 # write exact test tables out
-for (tst in tests) {
+doWriteTest <- function(tst) {
   test.name <- paste(tst$comparison, collapse=".VS.")
   test.base.dir <- paste0(out.base, test.name, "/")
   dir.create(test.base.dir, showWarnings=F)
@@ -267,7 +267,10 @@ for (tst in tests) {
     lhei=c(2,6,3) # url cont: # key-in-r-heatmap-2-function-of-gplots-package
   )
   dev.off()
+  NULL # return val
 }
+
+mclapply(tests, doWriteTest, mc.cores=8)
 
 pfc.matrix <- predFC(dge)
 fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
