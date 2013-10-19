@@ -143,7 +143,7 @@ dge <- old.dge[loci.2.keep,]
 dge$samples$lib.size <- colSums(dge$counts)
 
 old.gene.names <- gene.names
-gene.names <- gene.names[loci.2.keep]
+gene.names <- as.character(rownames(dge$counts))[loci.2.keep]
 
 ## edgeR normalisation and dispersion calculation ###
 dge <- calcNormFactors(dge, method="TMM")
@@ -227,6 +227,7 @@ for (tst in tests) {
 
   # tables for this test
   tt <- topTags(tst, n=n.tags)
+  agi.match <- match(detags, agi.fd$AGI)
   tt$short_description <- agi.fd$Short_description[agi.match]
   tt$curator_summary <- agi.fd$Curator_summary[agi.match]
   tt$computational_description <- agi.fd$Computational_description[agi.match]
@@ -272,6 +273,7 @@ pfc.matrix <- predFC(dge)
 fc.matrix <- sapply(tests, function (t) t$table$logFC, simplify = "array")
 p.matrix <- sapply(tests, function (t) t$table$PValue, simplify = "array")
 fdr.matrix <- sapply(tests, function (t) p.adjust(t$table$PValue), simplify="array")
+
 rownames(fc.matrix) <- gene.names
 rownames(p.matrix) <- gene.names
 rownames(fdr.matrix) <- gene.names
