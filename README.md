@@ -30,3 +30,6 @@ Steps:
 
 
 There are also some misc scripts, such as index creation etc.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kdmurray91/rnaseqpipeline/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
