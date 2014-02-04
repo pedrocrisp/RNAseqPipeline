@@ -38,8 +38,8 @@ fi
 echo "Run seqtk"
 qcstep="trimfq"
 mkdir -p qcd/${qcstep}/${sample}/
-echo time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/${sample} -a ""
-time bash ${basedir}/01-qc/seqtk_trimfq.sh -i reads/${sample} -o qcd/${qcstep}/${sample} -a ""
+echo time bash ${basedir}/01-qc/seqtk_trimfq.sh -i qcd/scythe/${sample} -o qcd/${qcstep}/${sample} -a ""
+time bash ${basedir}/01-qc/seqtk_trimfq.sh -i qcd/scythe/${sample} -o qcd/${qcstep}/${sample} -a ""
 
 # enter any additional qc here
 
