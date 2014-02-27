@@ -13,10 +13,10 @@ if [ -z "${bamfile}" ]
 then 
 	samfile="$(findSAMFiles ${input})"
 	# sam
-	echo "featureCounts -i $samfile -o \"$output/$(basename $output).counts\" $args"
-	featureCounts -i $samfile -o "$output/$(basename $output).counts" $args
+	echo "featureCounts -o \"$output/$(basename $output).counts\" $args $samfile" 
+	featureCounts -o "$output/$(basename $output).counts" $args $samfile 
 else
 	# bam
-	echo "featureCounts -b -i $bamfile -o \"$output/$(basename $output).counts\" $args"
-	featureCounts -b -i $bamfile -o "$output/$(basename $output).counts" $args
+	echo "featureCounts -o \"$output/$(basename $output).counts\" $args $bamfile"
+	featureCounts -o "$output/$(basename $output).counts" $args $bamfile
 fi
