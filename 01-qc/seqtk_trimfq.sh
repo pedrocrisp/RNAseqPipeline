@@ -12,6 +12,6 @@ do
 	fqname="$(basename $fq)"
 	sample=$(basename $output)
 	outputFile="$output/${fqname%%.*}.trimmed.fq"
-	echo "seqtk trimfq $args $fq >$outputFile"
-	seqtk trimfq $args $fq >$outputFile
+	echo "seqtk trimfq $args -l 0 $fq >$outputFile"
+	seqtk trimfq $args -l 0 $fq >$outputFile
 done
